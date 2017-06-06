@@ -1,2 +1,2 @@
 # redrockTechLibrary
-My Technical knowedges weill be stored here.
+My Technical knowledges will be stored here.
