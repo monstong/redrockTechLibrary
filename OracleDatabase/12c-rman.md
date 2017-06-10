@@ -57,8 +57,8 @@ The RESTORE operation reduces data file copy time from one database to another b
  RMAN command-line interface has been enhanced to:
 
  - Run SQL as-is at the command line, no longer requiring the SQL command.
- - Support SELECT statements.
- - Support the DESCRIBE command on tables and views.
+ - Support ```SELECT``` statements.
+ - Support the ```DESCRIBE``` command on tables and views.
 
 #### 2-8. Storage Snapshot Optimization
 Backup mode can induce additional system and I/O overhead due to writing whole block images into redo, in addition to increasing procedural complexity in large database environments. 
@@ -67,12 +67,12 @@ A third-party storage snapshot that meets the following requirements can be take
  - Write ordering is preserved for each file within a snapshot.
  - Snapshot stores the time at which a snapshot is completed.
 
-A new RECOVER command keyword, SNAPSHOT TIME, is introduced to recover a snapshot to a consistent point, without any additional manual procedures for point-in-time recovery needs.
+A new ```RECOVER``` command keyword, ```SNAPSHOT TIME```, is introduced to recover a snapshot to a consistent point, without any additional manual procedures for point-in-time recovery needs.
 
 The overhead consists of logging additional redo and performing a complete database checkpoint.
 
 #### 2-9. Table-Level Recovery From Backups
-  RMAN can restore and recover a table or set of tables from existing backups on disk or tape with the new RECOVER TABLE option.
+  RMAN can restore and recover a table or set of tables from existing backups on disk or tape with the new ```RECOVER TABLE``` option.
 
  - Required Tablespaces
    
@@ -107,11 +107,11 @@ The overhead consists of logging additional redo and performing a complete datab
     * To recover single table partitions, the COMPATIBLE initialization parameter for target database must be set to 11.1.0 or higher.
 
  - RECOVER TABLE optoins
-    * AUXILIARY DESTINATION clause and one of the following clauses to specify the point in time for recovery: 
-    * UNTIL TIME, UNTIL SCN, or UNTIL SEQUENCE.
-    * DUMP FILE and DATAPUMP DESTINATION : Specifies the name of the export dump file containing recovered tables or table partitions and the location in which it must be stored. See "About the Data Pump Export Dump File Used During RMAN Table Recovery" for information.
-    * NOTABLEIMPORT : Indicates that the recovered tables or table partitions must not be imported into the target database. See "About Importing Recovered Tables and Table Partitions into the Target Database"
-    * REMAP TABLE : Renames the recovered tables or table partitions in the target database. See "About Renaming Recovered Tables and Table Partitions During RMAN Recovery"
+    * AUXILIARY DESTINATION : Specifies the location used to store data files for the auxiliary database 
+    * UNTIL TIME, UNTIL SCN, or UNTIL SEQUENCE : Specifies the point in time for recovery
+    * DUMP FILE and DATAPUMP DESTINATION : Specifies the name of the export dump file containing recovered tables or table partitions and the location in which it must be stored.
+    * NOTABLEIMPORT : Indicates that the recovered tables or table partitions must not be imported into the target database. 
+    * REMAP TABLE : Renames the recovered tables or table partitions in the target database. 
     * REMAP TABLESPACE : Recovers the tables or table partitions into a tablespace that is different from the one in which these objects originally existed. 
     
  - Examples
@@ -137,14 +137,15 @@ The overhead consists of logging additional redo and performing a complete datab
 
 ### 3. 12c Release 2 New features
 
- 3-1. upgrade and drop the recovery catalog in one command (noprompt available)
+#### 3-1. upgrade and drop the recovery catalog in one command (noprompt available)
  ```
  RMAN> UPGRADE CATALOG NOPROMPT;
  
  RMAN> DROP CATALOG NOPROMPT;
  ```
  
- 3-2. REPAIR command enhancements
+#### 3-2. REPAIR command enhancements
+
  When you recover some data files to prior to 12.2, you have to follow the below steps.
   - take files offline
   - restore files
@@ -163,7 +164,7 @@ The overhead consists of logging additional redo and performing a complete datab
   RMAN> REPAIR DATAFILE 15;
   ```
  
- 3-3. Recover database until available redo
+#### 3-3. Recover database until available redo
  When you recover database using arhived redo logs prior to 12.2 , you have to find the last available archived log file(redo) manually using ```UNTIL CANCEL``` clause.
  
  In 12.2 you can use ```UNTIL AVAILABLE REDO``` clause then oracle apply the last available redo log(archived or redo log file) automatically
@@ -174,7 +175,7 @@ The overhead consists of logging additional redo and performing a complete datab
  RMAN> ALTER DATABASE OPEN RESETLOGS;
  ```
  
-  3-4. Table recovery enhancement
+#### 3-4. Table recovery enhancement
   In 12.1 you can recover the table/partition within same schema.
   In 12.2 you can recover the table/partition across different schema.
   
@@ -189,7 +190,7 @@ The overhead consists of logging additional redo and performing a complete datab
  In 12.2 disk space is cheked before the auxiliary instance is created 
  -> If there is not enough free space for the table recovery, the error is ocurred immediately and the table recovery is not executed.
  
- 3-5. Data Guard DUPLICATE Command Enhancements
+#### 3-5. Data Guard DUPLICATE Command Enhancements
  - Far Sync Standby Support :
  
    Starting with Oracle Database 12c Release 1 (12.1), a new variant of a standby database was introduced called far sync standby. 
