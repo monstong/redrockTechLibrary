@@ -130,125 +130,110 @@ Recovers the tables or table partitions into a tablespace that is different from
 
 Recover the tables EMP and DEPT using the following clauses in the RECOVER command: DATAPUMP DESTINATION, DUMP FILE, REMAP TABLE, and NOTABLEIMPORT.
 The following RECOVER command recovers the EMP and DEPT tables.
-
-RECOVER TABLE SCOTT.EMP, SCOTT.DEPT
+```SQL
+RMAN> RECOVER TABLE SCOTT.EMP, SCOTT.DEPT
     UNTIL TIME 'SYSDATE-1'
     AUXILIARY DESTINATION '/tmp/oracle/recover'
     DATAPUMP DESTINATION '/tmp/recover/dumpfiles'
     DUMP FILE 'emp_dept_exp_dump.dat'
     NOTABLEIMPORT;
-    
+```
+
 Recover partitions using the following RECOVER command with the REMAP TABLE and REMAP TABLESPACE clauses.
-RECOVER TABLE SH.SALES:SALES_1998, SH.SALES:SALES_1999
+```SQL
+RMAN> RECOVER TABLE SH.SALES:SALES_1998, SH.SALES:SALES_1999
     UNTIL SEQUENCE 354
     AUXILIARY DESTINATION '/tmp/oracle/recover'
     REMAP TABLE 'SH'.'SALES':'SALES_1998':'HISTORIC_SALES_1998',
               'SH'.'SALES':'SALES_1999':'HISTORIC_SALES_1999' 
     REMAP TABLESPACE 'SALES_TS':'SALES_PRE_2000_TS';
-    
+```
+
 
 
 
  
 ### 3. 12c Release 2 New features
 
+ 3-1. upgrade and drop the recovery catalog in one command (noprompt available)
+ ```
+ RMAN> UPGRADE CATALOG NOPROMPT;
+ 
+ RMAN> DROP CATALOG NOPROMPT;
+ ```
+ 
+ 3-2. REPAIR command enhancements
+ When you recover some data files to prior to 12.2, you have to follow the below steps.
+  - take files offline
+  - restore files
+  - recover files
+  - take files online
+  
+  In 12,2 , you can use one command ```REPAIR``` to recover some files.
+  
+  ```SQL
+  RMAN> REPAIR DATABASE;
+  
+  RMAN> REPAIR PLUGGABLE DATABASE pdb1;
+  
+  RMAN> REPAIR TABLESPACE tbs1;
+  
+  RMAN> REPAIR DATAFILE 15;
+  ```
+ 
+ 3-3. Recover database until available redo
+ When you recover database using arhived redo logs prior to 12.2 , you have to find the last available archived log file(redo) manually using ```UNTIL CANCEL``` clause.
+ 
+ In 12.2 you can use ```UNTIL AVAILABLE REDO``` clause then oracle apply the last available redo log(archived or redo log file) automatically
+ 
+ ```SQL
+ RMAN> RECOVER DATABASE UNTIL AVAILABLE REDO;
+ 
+ RMAN> ALTER DATABASE OPEN RESETLOGS;
+ ```
+ 
+  3-4. Table recovery enhancement
+  In 12.1 you can recover the table/partition within same schema.
+  In 12.2 you can recover the table/partition across different schema.
+  
+  ```SQL
+  RMAN> RECOVER TABLE "SCOTT"."EMP"
+  UNTIL TIME 'SYSDATE -2/24'
+  AUXILIARY DESTINATION '/opt/oradata/aux'
+  REMAP TABLE "SCOTT"."EMP":"JAMES"."EMP2";
+  ```
+ 
+ In 12.1 disk space is not checked before the auxiliary instance is created
+ In 12.2 disk space is cheked before the auxiliary instance is created 
+ -> If there is not enough free space for the table recovery, the error is ocurred immediately and the table recovery is not executed.
+ 
+ 3-5. Data Guard DUPLICATE Command Enhancements
+ - Far Sync Standby Support
+   Starting with Oracle Database 12c Release 1 (12.1), a new variant of a standby database was introduced called far sync standby. 
+   The goal of this enhancement is to allow users to create this type of standby database using the DUPLICATE command.
 
-RMAN: Syntax Enhancements
-You can use the enhanced SET NEWNAME command for the entire tablespace or database instead of on a per file basis. The new MOVE command enables easier movement of files to other locations instead of using backup and delete. The new RESTORE+RECOVER command for data file, tablespace and database performs restore and recovery in one step versus having to issue offline, restore, recover, and online operations.
-
-These enhancements simplify and improve ease-of-use for the SET NEWNAME, MOVE and RESTORE+RECOVER commands.
-
-Related Topics
-
-Oracle® Database Backup and Recovery Reference
-SCAN Listener Supports HTTP Protocol
-SCAN listener now enables connections for the recovery server coming over HTTP to be redirected to different machines based on the load on the recovery server machines.
-
-This feature enables connections to be load balanced across different recovery server machines.
-
-Related Topics
-
-Oracle® Real Application Clusters Installation Guide for Linux and UNIX
-Oracle Recovery Manager - Enhanced Table Recoveries Across Schemas Using REMAP SCHEMA
-The Oracle Recovery Manager (RMAN) table recovery feature offers REMAP TABLE and REMAP TABLESPACE options. The REMAP TABLE option is followed by a list of logical objects to be remapped with their new names. It can be used to rename entire tables or to rename table partitions. The REMAP TABLESPACE option, similarly, remaps all of the specified objects in the existing tablespace into a new one. These options, however, do not offer the flexibility of cross-schema table recovery. This feature adds the REMAP SCHEMA option to the RECOVER TABLE command, which is then passed to the Oracle Data Pump import operation. This feature allows a list of tables and table partitions to be recovered to an alternative schema other than the original schema of the table.
-
-This feature adds more flexibility to import or recover tables across different schemas, which provides more freedom to users and may also provide a better understanding of table-related indexes, triggers, constraints, and so on, if these object names are already existing under the same schema.
-
-Related Topics
-
-Oracle® Database Backup and Recovery User's Guide
-Disk Space Check During RECOVER TABLE Operation
-The Oracle Recovery Manager (RMAN) table recovery feature implicitly creates auxiliary instance, restores, and recovers tablespaces or data files to perform the table recovery option. However, if there is not enough space to create this instance, an operating system level error is returned. This enhancement provides an up front check on the available disk space for the auxiliary instance, before RMAN executes table recovery.
-
-RECOVER TABLE is a database operation that prevents operating system level error messages due to disk space issues. When this feature is implemented, the user is notified upfront if there is not enough space to perform the operation, and the RECOVER TABLE operation is aborted.
-
-Related Topics
-
-Oracle® Database Backup and Recovery User's Guide
-Upgrading the Incremental Transportable Scripts
-In Oracle Database 12c Release 1 (12.1), Oracle Recovery Manager introduced cross-platform transport capability. This feature addresses the seamless migration process using scripts that perform tasks for the entire process. It includes:
-
-Preparation of source data
-Roll forward phase for the destination data state to catch up with the source data
-Transport phase
-Customers have a migration path to Oracle Exadata using the My Oracle Support (MOS) Note 1389592.1. However, there are plenty of manual steps that are prone to errors. This feature helps in the seamless migrations of Oracle Database 12c to Oracle Exadata, thus expanding the Oracle Exadata adoption.
-
-Cross-Platform Import of a Pluggable Database into a Multitenant Container Database
-The concept of pluggable databases (PDBs) was introduced with Oracle Database 12c (multiple databases sharing a single database instance). This feature is the solution for multitenancy on Oracle Database. This feature addresses:
-
-Plugging in a remote PDB through cross-platform transportable tablespace within this release.
-Plugging in a remote non-multitenant container database (CDB) through cross-platform transportable tablespace (converting a non-CDB into a PDB with plans to support versions earlier than Oracle Database 12c).
-This feature increases customer adoption of consolidating their databases deployed with different architecture into the multitenant database architecture.
-
-Related Topics
-
-Oracle® Database Backup and Recovery User's Guide
-Cross-Platform Migration Support for Encrypted Tablespaces
-The concept of pluggable databases (PDBs) was introduced in Oracle Database 12c Release 1 (multiple databases sharing a single database instance). This feature addresses support for encrypted tablespaces which are also to be migrated using cross-platform transport.
-
-This feature increases customer adoption of consolidating their databases which have encrypted tablespaces with the multitenant architecture.
-
-Related Topics
-
-Oracle® Database Backup and Recovery User's Guide
-Cross-Platform Support Over The Network
-This feature addresses three capabilities of Oracle Recovery Manager (RMAN) in a cross-platform migration:
-
-RMAN support for Data Recovery Advisor on a standby database. Basically, when a data file is lost on a primary or standby database, RMAN generates repair scripts to fetch the file from the primary or standby database.
-Support for active duplicate scripts with cross-platform transport. The active duplicate defaults to backup set method only when the number of auxiliary channels is equal to or greater than the target channels and there is a TNS alias for the target database. This is required so that we do not break the existing active duplicate scripts.
-Active restore needs the added capability to support backup and restore cross-endian. However, this is limited to the tablespaces and not the entire database. This needs an additional FROM SERVICE syntax in the RESTORE FROM PLATFORM <platform> command such that it starts off an active restore session.
-Transporting the data across platforms helps in migration, ease of use, and more adoption of Oracle databases.
-
-Related Topics
-
-Oracle® Database Backup and Recovery User's Guide
-Data Guard DUPLICATE Command Enhancements
-Far Sync Standby Support
-
-Starting with Oracle Database 12c Release 1 (12.1), a new variant of a standby database was introduced called far sync standby. The goal of this enhancement is to allow users to create this type of standby database using the DUPLICATE command.
-
-Normal Duplicate Database From Physical Standby Database
-
-Currently, it is not possible to create a copy of a database when the target database is a physical standby database. Only a physical standby database can be created when connected to a physical standby database as the target database. The goal here is to remove this and the other possible restrictions, and allow the same set of operations when the target database is a primary or a physical standby database. This enhancement leverages the existing physical standby database for more uses by taking load off the primary database.
-
-Oracle Data Guard is a high availability (HA) or Maximum Availability Architecture (MAA) feature critical for disaster recovery deployments. By enabling easier and more efficient methods to enhance the DUPLICATE command to create far sync standby support and by allowing creation of a regular database, this feature increases the benefits for deploying Oracle Data Guard by offloading processes to the standby database.
-
-Related Topics
-
-Oracle® Data Guard Concepts and Administration
-DUPLICATE Command Support for Non Auto-Login Wallet Based Encrypted Backups
-Currently, it is not possible to run the DUPLICATE command using encrypted backups where the backup keys are stored in a password-based Oracle Wallet or a key store. Even if a user opens the wallet by starting an auxiliary instance, the DUPLICATE command restarts the auxiliary instance many times during the command execution. Hence, the restores from the encrypted backups after the instance bounce fail because of the inability to decrypt the backups (because Oracle Wallet or the key store is not opened). This restriction is removed with this feature.
-
-This feature enables complete support for encrypted backups with encrypted key storage being auto-login wallet, non-auto-login wallet, or user-specified passwords.
-
-Related Topics
-
-Oracle® Database Backup and Recovery User's Guide
+- Normal Duplicate Database From Physical Standby Database
+  Currently, it is not possible to create a copy of a database when the target database is a physical standby database. 
+  Only a physical standby database can be created when connected to a physical standby database as the target database. 
+  The goal here is to remove this and the other possible restrictions, and allow the same set of operations when the target 
+  database is a primary or a physical standby database. 
+  This enhancement leverages the existing physical standby database for more uses by taking load off the primary database.
 
 
 
-### 4. 
+
+
+
+
+
+
+
+
+
+
 
 
 ### References 
+- [Oracle Help Center](https://docs.oracle.com)
+
 
