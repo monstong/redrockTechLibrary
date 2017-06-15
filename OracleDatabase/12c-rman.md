@@ -1,6 +1,5 @@
 # Oracle Database 12c New feature series
 
-a
 ## RMAN enhancements
 
 ### 1. Licensing information
