@@ -13,6 +13,7 @@
 
 #### 2-1. Multitenant architecture
 
+In Oracle 11g R2,
 Multiple databases share nothing within the single consolidation server.
  * Too many background processes
  * High shared/process memory (SGA/PGA)
@@ -20,7 +21,9 @@ Multiple databases share nothing within the single consolidation server.
  
 ![archtecture of pre 12c](images/12c_multitenant_img1.PNG)
 
+In Oracle 12c
 
+![archtecture of 12c](images/12c_multitenant_img2.PNG)
 
 #### 2-1. component of multitent
 
