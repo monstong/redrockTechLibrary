@@ -64,7 +64,7 @@ A CDB includes the following components(containers):
 - PDBs
 
 A PDB appears to users and applications as if it were a non-CDB. For example, a PDB can contain the data and code required to support a specific application. A PDB is fully backward compatible with Oracle Database releases before Oracle Database 12c.
-
+(Maximum available PDBs : 253 include Seed PDB)
 
 #### 2-4. Configurations of multitenant container database.
 There are 3 possible configurations in oracle database 12c.
@@ -95,14 +95,7 @@ There are 3 possible configurations in oracle database 12c.
  - User tablespace
  - Local users and roles
 
- 
-
-    * Metadata-linked object
-   * Object-linked object
-
-
-
-#### 2-1. Creating a CDB
+#### 2-5. Creating a CDB
 
 You can create a CDB using,
  - DBCA is a utility with a graphical user interface that enables you to configure a CDB, create PDBs, plug in PDBs, and unplug PDBs.
@@ -119,28 +112,57 @@ You can create a CDB using,
 Creating a CDB using DBCA
 
 
-#### 2-1. Creating a PDB
-There are 5 ways to create a PDB in Oracle 12c.
- * aaa
- * bbb
- * ccc
- * ddd
- * eee
+#### 2-1. Creating and Dropping a PDB
+There are 4 ways to create a PDB in Oracle 12c.
 
-1. aaa
+ - Preparing for PDBs
+ 
+ Prerequisites must be met before creating a PDB.
 
-2. bbb
+ - Creating a PDB Using the Seed
+ 
+ You can use the CREATE PLUGGABLE DATABASE statement to create a PDB in a CDB using the files of the seed.
 
-3. ccc
+ - Creating a PDB by Cloning an Existing PDB or Non-CDB
+ 
+ You can create a PDB by cloning a local PDB, a remote PDB, or a non-CDB.
 
-4. ddd
+ - Creating a PDB by Plugging an Unplugged PDB into a CDB
+ 
+ You can create a PDB by plugging an unplugged PDB into a CDB.
 
-5. eee
+ - Creating a PDB Using a Non-CDB 
+ 
+ You can create a PDB using a non-CDB in different ways.
+
+ - Unplugging a PDB from a CDB
+ 
+ You can unplug a PDB from a CDB.
+
+ - Dropping a PDB
+ 
+ The DROP PLUGGABLE DATABASE statement drops a PDB. You can drop a PDB when you want to move the PDB from one CDB to another or when you no longer need the PDB.
+
 
 
 
 #### 2-1. Managing a CDB and PDBs
 
+- connecting a CDB and PDB
+
+- Start and stop a CDB and PDB
+
+
+- Multitenant data dictionary
+
+![archtecture of 12c](images/12c_multitenant_img4.PNG)
+
+- Shared and Non-shared Object
+
+    * Metadata-linked object
+   * Object-linked object
+
+- Configuring an initialization parameter
 
 
 #### 2-1. user and privileges (dictionary)
