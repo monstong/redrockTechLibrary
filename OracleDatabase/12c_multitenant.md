@@ -173,6 +173,46 @@ There are 4 ways to create a PDB in Oracle 12c.
 
 ### 3. 12c Release 2 New features
 
+#### 3-1. About Application containers
+
+**Purpose of Application Containers**
+
+ An application container, like the CDB itself, can include multiple PDBs, and enables these PDBs to share metadata and data.
+
+The application root enables application PDBs to share an application, which in this context means a named, versioned set of common metadata and data. 
+
+A typical application installs application common users, metadata-linked common objects, and data-linked common objects.
+
+**Key Benefits of Application Containers**
+
+Application containers provide several benefits over storing each application in a separate PDB.
+
+The application root stores metadata and data that all application PDBs can share.
+
+You maintain your master application definition in the application root, instead of maintaining a separate copy in each PDB.
+
+If you upgrade the application in the application root, then the changes are automatically propagated to all application PDBs.
+
+An application container can include an application seed, application PDBs, and proxy PDBs (which refer to PDBs in other CDBs).
+
+You can rapidly create new application PDBs from the application seed.
+
+You can query views that report on all PDBs in the application container.
+
+While connected to the application root, you can use the CONTAINERS function to perform DML on objects in multiple PDBs.
+
+You can unplug a PDB from an application root, and then plug it in to an application root in a higher Oracle database release. Thus, PDBs are useful in an Oracle database upgrade.
+
+ **components of Application containers**
+ - Application root
+ - Application seed(optional)
+ - Application PDBs
+
+![archtecture of 12c](images/12c_multitenant_img5.PNG)
+
+
+
+#### 3-2. 
 
 ### References
 [Oracle Help center : https://docs.oracle.com](https://docs.oracle.com)
