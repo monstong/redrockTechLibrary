@@ -211,8 +211,76 @@ You can unplug a PDB from an application root, and then plug it in to an applica
 ![archtecture of 12c](images/12c_multitenant_img5.PNG)
 
 
+**Creating Application containers**
 
-#### 3-2. 
+1. connect to the CDB Root
+2. Create the PDB_APP1 as the application root and open it.
+
+```
+SQL> CONNECT / AS SYSDBA
+SQL> CREATE PLUGGABLE DATABASE PDB_APP1
+   AS APPLICATION CONTAINER
+   ADMIN USER adminseed IDENTIFIED BY p1
+   ROLES=(CONNECT)
+   CREATE_FILE_DEST='/u02/oradata/pdb_app1_root';
+
+SQL> ALTER PLUGGABLE DATABASE PDB_APP1 OPEN;
+```
+3. Optionally, create the application seed within the application root.
+```
+SQL> CONNECT sys@PDB_APP1 AS SYSDBA
+SQL> CREATE PLUGGABLE DATABASE AS SEED 
+ADMIN USER admin1 IDENTIFIED BY p1 
+ROLES=(CONNECT)
+CREATE_FILE_DEST='/u02/oradata/pdb_app1_root/pdb_app1_seed';
+```
+
+3. Connect to the PDB_APP1
+4. create the PDB2 as an application PDB and open it.
+```
+SQL> CONNECT sys@PDB_APP1 AS SYSDBA
+SQL> CREATE PLUGGABLE DATABASE PDB2
+ADMIN USER admin2 IDENTIFIED BY p1
+ROLES=(CONNECT)
+CREATE_FILE_DEST='/u02/oradata/pdb_app1_root/pdb2';
+```
+
+
+**Application name and version**
+Within an application container, an application is the named, versioned set of common data and metadata stored in the application root.
+
+To install an application, execute ALTER PDB APPLICATION BEGIN INSTALL, then execute user-created SQL statements,then end by executing ALTER PDB APPLICATION END INSTALL.
+
+An application might include a application common user, an application common object, or some multiple and combination of the preceding.
+
+An application  has its own name  and a version number.
+
+An application can alse be patched, upgraded and unintalled.
+
+**Installing and Upgrading Application**
+Connect to the PDB_APP1 application root.
+
+Assign an application name and version number to the new APP1 application that is being installed
+
+SQL> ALTER PLUGGABLE DATABASE APPLICATION APP1 
+BEGIN INSTALL '1.0';
+
+Execute the user-defined scripts (create  a table , a user or something)
+
+SQL>@scripts
+
+Finish the applicatin installation
+SQL> ALTER PLUGGABLE DATABASE APPLICATION APP1
+END INSTALL '1.0';
+
+Synchronize each application PDB.
+
+#### 3-2. other enhancement for multitenant.
+the Number of PDBs :  253 -> 4096 (including CDB seed) 
+the number of services : 1024   -> 10000
+
+new Parameter : MAX_PDBS  (specfifies a limit on the number of PDBs)
+
 
 ### References
 [Oracle Help center : https://docs.oracle.com](https://docs.oracle.com)
