@@ -257,7 +257,11 @@ An application  has its own name  and a version number.
 
 An application can alse be patched, upgraded and unintalled.
 
+
+
 **Installing and Upgrading Application**
+Installing
+
 Connect to the PDB_APP1 application root.
 
 Assign an application name and version number to the new APP1 application that is being installed
@@ -274,6 +278,31 @@ SQL> ALTER PLUGGABLE DATABASE APPLICATION APP1
 END INSTALL '1.0';
 
 Synchronize each application PDB.
+
+
+UPgrading
+connect to the PDB_APP1 applicatin root of the APP1 application.
+
+check the current version number of the APP1 application before starting the upgrade.
+
+start the application upgrade to a higher version number.
+SQL> ALTER PLUGGABLE DATABASE APPLICATION APP1 BEGIN UPGRADE '1.0' TO '1.1';
+
+complete the application upgrade
+
+SQL> @scripts
+SQL> ALTER PLUGGABLE DATABASE APPLICATION APP1 END UPGRADE TO '1.1';
+
+
+synchronize each application PDB.
+
+
+**How an Application Upgrade Works**
+During an application upgrade, the application remains available. To make this availability possible, Oracle Database clones the application root.
+
+The following figure gives an overview of the application upgrade process.
+
+![archtecture of 12c](images/12c_multitenant_img6.PNG)
 
 #### 3-2. other enhancement for multitenant.
 the Number of PDBs :  253 -> 4096 (including CDB seed) 
