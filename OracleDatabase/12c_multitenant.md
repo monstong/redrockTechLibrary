@@ -304,11 +304,149 @@ The following figure gives an overview of the application upgrade process.
 
 ![archtecture of 12c](images/12c_multitenant_img6.PNG)
 
+
+**Creation of Application Common Objects**
+To create common objects, connect to an application root, and then execute a CREATE statement that specifies a sharing attribute.
+
+You can only create or change application common objects as part of an application installation, upgrade, or patch.
+
+ - DEFAULT_SHARING initialization parameter :the default sharing attribute for all database objects created in the root.
+
+ - SHARING clause : You specify this clause in the CREATE statement itself.(Possible values are METADATA, DATA, EXTENDED DATA, and NONE.)
+
+
+Metadata-Linked Application Common Objects
+A metadata link is a dictionary object that supports referring to, and granting privileges on, common metadata shared by all PDBs in the application container.
+
+The metadata for the object is stored once in the application root.
+(Tables, views, and code objects (such as PL/SQL procedures))
+
+Typically, most objects in an application will be metadata-linked. Thus, you need only maintain one master application definition. This approach centralizes management of the application in multiple application PDBs.
+
+Data-Linked Application Common Objects
+A data-linked object is an object whose metadata and data reside in an application root, and are accessible from all application PDBs in this application container.
+
+A data link is a dictionary object that functions much like a synonym. For example, if countries is an application common table, then all application PDBs access the same copy of this table by means of a data link. If a row is added to this table, then this row is visible in all application PDBs.
+
+A data link must be owned by an application common user. 
+
+For example, if an application container contains 10 application PDBs, and if every PDB contains a link to the countries application common table, then all 10 PDBs contain dictionary definitions for this link.
+
+
+ Object Type | SHARING Value| Metadata Storage | Data Storage 
+--|--|--|--|--
+Data-Linked|DATA|Application root|Application root
+Metadata-Linked|METADATA|Application root|Application PDB
+
+
+**Application Patch**
+
+An application patch is a minor change to an application.
+
+Typical examples of application patching include bug fixes and security patches. New functions and packages are permitted within a patch.
+
+In general, destructive operations are not permitted. For example, a patch cannot include DROP statements, or ALTER TABLE statements that drop a column or change a data type.
+
+**USE CASE : APPLICATION CONTAINER**
+Application Container Use Case: SaaS
+A SaaS deployment can use multiple application PDBs, each for a separate customer, that share metadata and data.
+
+In a pure SaaS environment, the master application definition resides in the application root, but the customer-specific data resides in its own application PDB. For example, sales_app is the application model in the application root. The application PDB named cust1_pdb contains sales data only for customer 1, whereas the application PDB named cust2_pdb contains sales data only for customer 2. Plugging, unplugging, cloning, and other PDB-level operations are available for individual customer PDBs.
+
+
 #### 3-2. other enhancement for multitenant.
 the Number of PDBs :  253 -> 4096 (including CDB seed) 
 the number of services : 1024   -> 10000
 
 new Parameter : MAX_PDBS  (specfifies a limit on the number of PDBs)
+LOCAL UNDO available
+PDB level flashback database available
+PDB SYSTEM tablespace recovery available
+
+Per PDB characterset
+Heat map and ADO supported (for multitenant)
+can creating proxy pdb
+
+Cloning metadata only with NO DATA
+allowing per-PDB character set
+
+
+Unplugging a PDB into a single archive file includes : XML file and data file
+Plugging the PDB requires only the archive file.
+
+SQL> ALTER PLUGGABLE DATABASE pdb1
+UNPLUG INTO '/tmp/pdb1.pdb';
+
+SQL> CREATE PLUGGABLE DATABASE pdb_new USING '/tmp/pdb1.pdb';
+
+
+relocate a PDB
+create a proxy PDB
+
+
+convert a regular PDB to an application PDB
+
+clone pdb into app root
+unplug and plug into app root
+
+and run pdb_to_apppdb.sql 
+and then sync that pdb with app root
+
+local undo  (per PDB)
+
+when is it required?
+
+hot cloning,
+near zero downtime relocation
+
+startup upgrade
+alter database local undo on;  (at CDB level)
+
+database property  view
+(local_undo_enabled column)
+
+
+clone a PDB from a local or remote PDB in hot mode.
+
+connect to the target cdb2 root to create the database link to cdb1
+
+enable the local undo mode in both the cdbs
+
+clone the remote pdb1 to pdb3
+open pdb3 in read-only or read-write mode
+
+
+and then
+
+incremental refreshing
+- manual
+- automatic(predefined interval)
+
+
+
+near zero downtime relocation
+
+
+set the local undo
+
+set archivelog mode both
+
+grant SYSPOER to the user  connected to cdb1 via the db link created in cdb2
+
+create pluggale database  ... relocate 
+
+open pdb rw
+
+
+there's no need to:
+
+unplug pdb from src cdb
+copy or transfter data files
+plug pdb in new cdb
+drop src pdb in src cdb
+
+ 
+
 
 
 ### References
