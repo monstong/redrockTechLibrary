@@ -303,9 +303,8 @@ During an application upgrade, the application remains available. To make this a
 
 The following figure gives an overview of the application upgrade process.
 
-![archtecture of 12c](images/12c_multitenant_img6.PNG)
+![archtecture of 12c](images/12c_multitenant_img6.png)
 
-![archtecture of 12c](images/12c_multitenant_img4.PNG)
 
 
 **Creation of Application Common Objects**
