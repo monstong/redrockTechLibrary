@@ -338,7 +338,7 @@ For example, if an application container contains 10 application PDBs, and if ev
 
 
 | Object Type | SHARING Value| Metadata Storage | Data Storage |
-|--|--|--|--|--|
+|------------ | -------------|------------ | -------------|
 |Data-Linked|DATA|Application root|Application root|
 |Metadata-Linked|METADATA|Application root|Application PDB|
 
