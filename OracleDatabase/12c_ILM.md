@@ -137,19 +137,58 @@ interval reference paritioning
 
 12.2
 
-auto-list partitioning
+ - **Auto-list Partitioning**
+ in pre-12c, you create in advanced all partitions for the known values and all unknown values is stored in a DEFAULT partition
 
-composite partitioning enhancement
 
-multicolumn list partitioning
+in 12.2, you create paritions for known values only and all others are created automatically when using Auto-List partitioning
 
-read-only partition
+```
+SQL> CREATE TABLE emp ( ... )
+PARTITION BY LIST (LOCATION) AUTOMATIC
+(PARITION p_EAST VALUES ('NEW YORK'));
 
-filtered partition maintenance operations
+SQL> SELECT owner, table_name, partitioning_type AS type, autolist
+FROM dba_part_tables
+WHERE owner IN('SCOTT');
 
-when move, split perge parition
-you can use  where (filter condition)
 
+OWNER	TABLE_NAME	TYPE	AUTOLIST
+------  ----------  -----   ---------
+SCOTT	EMP	        LIST	YES
+```
+
+ - **READ ONLY Partitioning**
+
+Some old partition needs a protection from unexpected DMLs.
+
+In 12.2, you can modify partition in read-only mode.
+
+```
+-- set read only mode
+SQL> ALTER TABLE sales
+MODIFY PARTITION sales_hist READ ONLY;
+
+-- it may be occured an error
+SQL> INSERT INTO sales VALUES (1,'A','09-JUL-1980');
+ORA-014466: Data in a read-only partition or subpartition cannot be modified
+
+-- set back to read-write mode
+SQL> ALTER TABLE sales
+MODIFY PARTITION sales_hist READ WRITE;
+```
+
+
+ - **Filtered partition maintenance operations**
+ 
+
+When MOVE,MERGE and SPLIT partition operations, you can use data filtering with WHERE clause.
+
+```
+SQL> ALTER TABLE sales MERGE PARTITION 201601,201602,201603
+INTO PARTITION 2016Q1 COMPRESS FOR QUERY HIGH TABLESPACE low_cost_tbs
+INCLUDING ROWS WHERE sales_state = 'COMPLETED';
+```
  
 ## 5. Compression enhancements
 
