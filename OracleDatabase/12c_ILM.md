@@ -194,7 +194,7 @@ INCLUDING ROWS WHERE sales_state = 'COMPLETED';
 
 
 |Table Compression Method|Direct-Path INSERT|Notes|
-|---------|---------|---------|---------|
+|---------|---------|---------|
 |Basic table compression<br/>ROW STORE COMPRESS [BASIC]|Rows are compressed with basic table compression.|ROW STORE COMPRESS and ROW STORE COMPRESS BASIC are equivalent. Rows inserted without using direct-path insert and updated rows are uncompressed.|
 |Advanced row compression<br/>ROW STORE COMPRESS ADVANCED|Rows are compressed with advanced row compression.|Rows inserted with or without using direct-path insert and updated rows are compressed using advanced row compression.|
 |Warehouse compression (Hybrid Columnar Compression)<br/>COLUMN STORE COMPRESS FOR QUERY [LOW/HIGH]|Rows are compressed with warehouse compression.|This compression method can result in high CPU overhead. Updated rows and rows inserted without using direct-path insert are stored in row format instead of column format, and thus have a lower compression level.|
