@@ -120,6 +120,12 @@ clear  heap map stats
 
 ## 4. Partitioning enhancements
 
+ Partitioning allows the big segments like tables or indexes to be subdivided into smaller pieces.
+ It provides an enhanced I/O performance and easier manageability.
+ 
+
+
+
 12.1
 online move partition
 (move/split/merge/compress)
