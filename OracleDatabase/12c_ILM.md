@@ -106,12 +106,52 @@ ADO policies automatically compress data when it qualifies.
 ADO policies automatically move segments when necessary.
 ADO is dependent on Heat Map, and will not work unless Heat Map is enabled.
 
+storage tiering read only 추가
+
+enable/diable ado policy per table
+
+ado on/off  database level
+
+stop heat map
+
+clear  heap map stats
 
 
 
 ## 4. Partitioning enhancements
 
+12.1
+online move partition
+(move/split/merge/compress)
+DML allowed, not DDL
+global and local indexes maintained
+
+12.1.0.2
+interval reference paritioning
+
+12.2
+
+auto-list partitioning
+
+composite partitioning enhancement
+
+multicolumn list partitioning
+
+read-only partition
+
+filtered partition maintenance operations
+
+when move, split perge parition
+you can use  where (filter condition)
+
+ 
 ## 5. Compression enhancements
 
 
+12.1
+그대로
+
+12.2 
+
 ## 6. Customized Evaluation and Execution and Monitoring(DBMS_ILM)
+그대로
