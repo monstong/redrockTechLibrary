@@ -202,4 +202,37 @@ INCLUDING ROWS WHERE sales_state = 'COMPLETED';
 
 
 ## 6. Customized Evaluation and Execution and Monitoring(DBMS_ILM)
-그대로
+
+The DBMS_ILM package provides an interface for implementing Information Lifecycle Management (ILM) strategies using Automatic Data Optimization (ADO) policies.
+
+The DBMS_ILM package supports immediate evaluation or execution of Automatic Data Optimization (ADO) related tasks. 
+
+The package supports the following two ways for scheduling ADO actions.
+
+- A database user schedules immediate ADO policy execution on a set of objects.
+- A database user views the results of evaluation of ADO policies on a set of objects.The user then adds or deletes objects to this set and reviews the results of ADO policy evaluation again. The user repeats this step to determine the set of objects for ADO execution. The user can then perform immediate scheduling of ADO actions on this set of objects
+
+
+|Subprogram|Description|
+|-----|-----|
+|ADD_TO_ILM Procedure|Adds the object specified through the argument to a particular ADO task and evaluates the ADO policies on this object|
+|ARCHIVESTATENAME Function|Returns the value of the ORA_ARCHIVE_STATE column of a row-archival enabled table|
+|EXECUTE_ILM Procedure|Executes an ADO task.|
+|EXECUTE_ILM_TASK Procedure|Executes an ADO task that has been evaluated previously|
+|PREVIEW_ILM Procedure|Evaluates all ADO policies in the scope specified by means of an argument|
+|REMOVE_FROM_ILM Procedure|Removes the object specified through the argument from a particular ADO task|
+|STOP_ILM Procedure|Stops ADO-related jobs created for a particular ADO task|
+
+
+The DBMS_ILM_ADMIN package provides an interface to customize Automatic Data Optimization (ADO) policy execution. 
+
+|Subprogram|Description|
+|-----|-----|
+|CLEAR_HEAT_MAP_ALL Procedure|Deletes all rows except the dummy row|
+|CLEAR_HEAT_MAP_TABLE Procedure|Clears all or some statistics for the heat map table, deleting rows for a given table or segment which match a given pattern, or all such rows|
+|CUSTOMIZE_ILM Procedure|Customizes environment for ILM execution by specifying the values for ILM execution related parameters|
+|DISABLE_ILM Procedure|Turns off all background ILM scheduling|
+|ENABLE_ILM Procedure|Turns on all background ILM scheduling|
+|SET_HEAT_MAP_ALL Procedure|Updates or inserts heat map rows for all tables|
+|SET_HEAT_MAP_START Procedure|Sets the start date for collecting heat map data|
+|SET_HEAT_MAP_TABLE Procedure|Updates or inserts a row for the specified table or segment|
