@@ -193,12 +193,12 @@ INCLUDING ROWS WHERE sales_state = 'COMPLETED';
 ## 5. Compression enhancements
 
 
-|Table Compression Method|CREATE/ALTER TABLE|Syntax	Direct-Path INSERT|Notes|
+|Table Compression Method|Direct-Path INSERT|Notes|
 |---------|---------|---------|---------|
-|Basic table compression|ROW STORE COMPRESS [BASIC]|Rows are compressed with basic table compression.|ROW STORE COMPRESS and ROW STORE COMPRESS BASIC are equivalent. Rows inserted without using direct-path insert and updated rows are uncompressed.|
-|Advanced row compression|ROW STORE COMPRESS ADVANCED|Rows are compressed with advanced row compression.|Rows inserted with or without using direct-path insert and updated rows are compressed using advanced row compression.|
-|Warehouse compression (Hybrid Columnar Compression)|COLUMN STORE COMPRESS FOR QUERY [LOW|HIGH]|Rows are compressed with warehouse compression.|This compression method can result in high CPU overhead. Updated rows and rows inserted without using direct-path insert are stored in row format instead of column format, and thus have a lower compression level.|
-|Archive compression (Hybrid Columnar Compression)|COLUMN STORE COMPRESS FOR ARCHIVE [LOW|HIGH]|Rows are compressed with archive compression.|This compression method can result in high CPU overhead.Updated rows and rows inserted without using direct-path insert are stored in row format instead of column format, and thus have a lower compression level.|
+|Basic table compression<br/>ROW STORE COMPRESS [BASIC]|Rows are compressed with basic table compression.|ROW STORE COMPRESS and ROW STORE COMPRESS BASIC are equivalent. Rows inserted without using direct-path insert and updated rows are uncompressed.|
+|Advanced row compression<br/>ROW STORE COMPRESS ADVANCED|Rows are compressed with advanced row compression.|Rows inserted with or without using direct-path insert and updated rows are compressed using advanced row compression.|
+|Warehouse compression (Hybrid Columnar Compression)<br/>COLUMN STORE COMPRESS FOR QUERY [LOW/HIGH]|Rows are compressed with warehouse compression.|This compression method can result in high CPU overhead. Updated rows and rows inserted without using direct-path insert are stored in row format instead of column format, and thus have a lower compression level.|
+|Archive compression (Hybrid Columnar Compression)<br/>COLUMN STORE COMPRESS FOR ARCHIVE [LOW/HIGH]|Rows are compressed with archive compression.|This compression method can result in high CPU overhead.Updated rows and rows inserted without using direct-path insert are stored in row format instead of column format, and thus have a lower compression level.|
 
 
 ## 6. Customized Evaluation and Execution and Monitoring(DBMS_ILM)
