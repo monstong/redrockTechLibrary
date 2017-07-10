@@ -23,6 +23,18 @@
 ### 2. Data Redaction
 
 
+12.1 
+when you create the policy , you can provide only one "how to redact" specification
+
+12.2 
+
+Each column can its own policy expression
+
+User-defined redaction format available
+
+
+
+
 ### 3. Privilege Analysis
 
 
