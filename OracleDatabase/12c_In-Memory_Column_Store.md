@@ -120,15 +120,75 @@ full db caching
 big table caching
 (Auto mode)
 
-12.2 NF
 
-set dynamic param  im_memory_size
+### 7. IM Column Store 12.2 NF
 
-im faststart
+1. Dynamic INMEMORY_SIZE Parameter
 
-query table : join groups
+You can dynamically increase the IM column store size but not decrease.
+SQL> ALTER SYSTEM SET INMEMORY_SIZE = 100G scope=both;
 
-cu  to enable  expression, virtual columns
+
+2. IM FastStart
+
+Optimize the population of the IM column store when the database restarts
+- Create the tablespace designated as the IM FastStart area
+Enable IM FastStart
+
+SQL> exec DBMS_INMEMORY_ADMIN.ENABLE_FASTSTART('fs_tbs');
+
+
+3. Queries on In-Memory tables : Join Groups
+
+Optimize queries using frequently joined columns:
+Without join groups, if the optimizer uses a hash join but cannot use a Bloom filter, or if the Bloom filter does not filter rows effectively, then the database must decompress IMCUs and use an expensive hash join.
+
+The database automatically creates a common dictionary in the IM column store when a join group is defined on the underlying columns. The common dictionary enables the join columns to share the same dictionary codes.
+
+
+Define the target of join groups
+SQL> SELECT SUM(lo_extendedprice * 10_discount) revenue
+FROM oe.lorder l, app.date_dim d
+WHERE l.orderdate = d.datekey;
+
+
+Primary column values added
+
+SQL> CREATE INMEMORY JOIN GROUP j1
+( app.date_dim(datekey),
+oe.lorder(orderdate));
+
+SQL> ALTER INMEMORY JOIN GROUP j1
+ADD (oe.shipments(ship_date));
+
+
+
+to show the status of join groups
+
+SELECT JOINGROUP_NAME, TABLE_NAME, COLUMN_NAME,FLAGS
+FROM   DBA_JOINGROUPS;
+
+JOINGROUP_NAME	TABLE_NAME	COLUMN_NAME	FLAGS
+------------------ -------- ------- ----------------
+J1		DATE_DIM	DATEKEY		MASTER
+J1		LORDER		ORDERDATE
+
+
+
+4. Population of Expressions and virtual columns results
+For the better query performance improved by caching, you can not only populate the IMCU but also column expression or virtual columns
+Population of expression uses IMEUs (IM expression units)
+
+
+To enable population of expressions
+
+INMEMORY_EXPRESSIONS_USAGE = ENABLE
+To enable population of virtual colums
+INMEMORY_VIRTUAL_COLUMNS = ENABLE
+
+
+To detect the hottest expression candidates,uses the DBMS_INMEMORY_ADMIN.IME_CAPTURE_EXPRESSIONS
+
 
 
 
