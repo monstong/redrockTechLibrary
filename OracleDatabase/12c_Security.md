@@ -74,6 +74,13 @@ dbms_ha_alert_prvt
 DEQUEUE sys.sys$service_metrics
 
 
+12.2 privilege analysis
+
+PL/SQLCompilation Privileges Capture available
+
+CBAC(Code Based Access Control) Roles and SAR(Secure Application Role) capture available
+
+
 
 ### 4. Unified Audit
 
