@@ -154,6 +154,48 @@ purge -age 60 -type incident
 
 ### 5. DATAPUMP
 
+
+Parallel Export and Import
+
+enables data from multiple partitions to be loaded in parallel:
+ - same partitioning method and parition names only
+
+$ impdp ... DATA_OPTIONS = TRUST_EXISTING_TABLE_PARTITIONS
+
+unloads the data for all table partitions in one partition
+
+$ expdp ... DATA_OPTIONS = GROUP_PARTITION_TABLE_DATA
+
+
+Dump file validation
+
+check valid data for date and number columns in imported tables
+use the option when importing a dump file from an untrusted source (like includes SQL injection code)
+
+
+$ impdp ... DATA_OPTIONS = VALIDATE_TABLE_DATA
+
+LONG columns Loaded with Network import
+
+12.1
+
+$ impdp ... TABLES=hr.employees NETWORK_LINK=dblink1
+
+-> use INSERT .. AS SELECT method (It can not insert LONG column)
+
+12.2
+```
+$ impdp ... TABLES=hr.employees   NETWORK_LINK=dblink1
+ACCESS_METHOD=DIRECT_PATH DATA_OPTIONS=ENABLE_NETWORK_COMPRESSION
+```
+
+ACCESS_METHOD
+ DIRECT_PATH -> LONG ok, other may restric
+ INSERT_AS_SELECT -> same to pre 12.2
+ AUTOMATIC -> autmatically choose one of the above 2 modes for each table
+
+
+
 ### 6. Data Guard
 
 
