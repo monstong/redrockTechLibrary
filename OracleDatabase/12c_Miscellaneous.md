@@ -89,7 +89,68 @@ FOR EXCHANGE WITH TABLE tab_part;
 
 
 
+
 ### 4. Diagnosability
+
+Automatic ADR files Purge
+
+you can specify to a retention policy for automatic purging old ADR contents.
+
+SHORTP_POLICY 
+value in hour , default = 720(30days)
+ADR contents for SHORTP_POLICY : Trace files, Core dump files
+
+
+LONGP_POLICY 
+value in hours , default = 8760 (365 days)
+ADR contents for LONGP_POLICY : Incident information, Incident dumps , Alert logs
+
+SIZEP_POLICY
+values in size (nn GB, MB, KB etc)
+when adr home size is greater then target size, purge ADR contents as time order.
+
+you can also puge the ADR contents manually
+
+12.1
+
+purge -i (incident ID)
+ -age (nn minutes)
+ -type (alert, incident, trace ...)
+
+12.2
+
+purge -size (nn bytes)
+
+purge [-i {id | start_id end_id} | 
+  -age mins [-type {ALERT|INCIDENT|TRACE|CDUMP|HM|UTSCDMP}]]
+
+
+
+set control (SHORTP_POLICY = 360)
+
+show control
+
+estimate (SHORTP_POLICY = 8, LONGP_POLICY=90)
+
+
+examples
+
+This example purges all diagnostic data in the current ADR home based on the default purging policies:
+
+purge
+
+This example purges all diagnostic data for all incidents between 123 and 456:
+
+purge -i 123 456
+
+This example purges all incident data from before the last hour:
+
+purge -age 60 -type incident
+
+
+
+
+
 
 ### 5. DATAPUMP
 
