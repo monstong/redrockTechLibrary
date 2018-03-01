@@ -6,7 +6,6 @@
     "configurations": [
         {
             "name": "Launch",
-
             "mode": "debug",
             "remotePath": "",
             "port": 2345,
