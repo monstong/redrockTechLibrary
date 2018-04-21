@@ -17,7 +17,7 @@ func main() {
 	// and provide a HostKeyCallback.
 
 	config := &ssh.ClientConfig{
-		User: "root",
+		User: "oracle",
 		Auth: []ssh.AuthMethod{
 			ssh.Password("oracle"),
 		},
@@ -42,7 +42,7 @@ func main() {
 	var b bytes.Buffer
 	session.Stdout = &b
 
-	session.Setenv("ORACLE_HOME","/u01/app/oracle/product/11.2.0/dbhome_1/")
+	session.Setenv("ORACLE_HOME", "/u01/app/oracle/product/11.2.0/dbhome_1/")
 
 	if err := session.Run("/u01/app/oracle/product/11.2.0/dbhome_1/OPatch/opatch lsinventory"); err != nil {
 		log.Fatal("Failed to run: " + err.Error())
