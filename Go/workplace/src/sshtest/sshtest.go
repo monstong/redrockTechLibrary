@@ -41,7 +41,10 @@ func main() {
 	// the remote side using the Run method.
 	var b bytes.Buffer
 	session.Stdout = &b
-	if err := session.Run("/usr/bin/whoami"); err != nil {
+
+	session.Setenv("ORACLE_HOME","/u01/app/oracle/product/11.2.0/dbhome_1/")
+
+	if err := session.Run("/u01/app/oracle/product/11.2.0/dbhome_1/OPatch/opatch lsinventory"); err != nil {
 		log.Fatal("Failed to run: " + err.Error())
 	}
 	fmt.Println(b.String())
