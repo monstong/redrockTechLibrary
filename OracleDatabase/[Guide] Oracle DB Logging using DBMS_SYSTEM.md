@@ -6,7 +6,7 @@ Oracle DB 관리시 운영 모니터링 상 필요하나 built-in 되어 있지 
 
 Oracle 에서는 Enterprise Manager를 사용하는 것을 권고하지만 EM을 구성하는 것 자체가 또 다른 관리포인트 증가 및 추가 공수(EM 공부 EM서버 자원 확보, 구성 등)가 되므로  최대한 DB 내에서 해결해 보자.
 
-# The whole process of configuring and applying the user-customed monitoring script in Oracle DB.
+## 1. The whole process of configuring and applying the user-customed monitoring script in Oracle DB.
 
 
 
@@ -36,7 +36,7 @@ Oracle 에서는 Enterprise Manager를 사용하는 것을 권고하지만 EM을
 [Procedure body end]
 ```
 
-# DBMS_SYSTEM.ksdwrt procedure 사용 예시
+## 2. DBMS_SYSTEM.ksdwrt procedure 사용 예시
 
 ```SQL
 SQL> exec DBMS_SYSTEM.ksdwrt(n, 'your messages');
@@ -60,7 +60,7 @@ This is my first message
    * 3 : 둘다 저장
 
 
-# 활용 예제 (ASM Diskgroup 사용율 Monitoring을 DBMS_SYSTEM 패키지를 이용해 DB내 설정해 보자)
+## 3. 활용 예제 (ASM Diskgroup 사용율 Monitoring을 DBMS_SYSTEM 패키지를 이용해 DB내 설정해 보자)
 
 1) 모니터링 PL/SQL Procedure 작성 : 크게 3가지 part로 나누어 설정한다.
 모니터링 데이터 수집 - 모니터링 임계치등 판단 - DBMS_SYSTEM.ksdwrt 로 출력
@@ -133,10 +133,10 @@ END;
 ```
 
 
-# 맺음말
+## 맺음말
  모니터링 스크립트랑 임계치 활용등은 예시일 뿐이니 사용자 환경에 맞게 수정하면 된다.
  요점은 alert log 파일에 SQL 조회 결과를 추가적인 shell script 이용없이 로깅을 하는 부분이다.
 
-# reference 
+## reference 
 
  - [DBMS_SYSTEM 패키지 설명 : https://www.morganslibrary.org/reference/pkgs/dbms_system.html](https://www.morganslibrary.org/reference/pkgs/dbms_system.html)
