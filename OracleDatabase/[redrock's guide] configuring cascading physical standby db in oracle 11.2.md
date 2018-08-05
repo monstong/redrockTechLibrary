@@ -267,3 +267,79 @@ duplicate target database for standby
 
 
 
+
+## switchover
+
+
+
+rman target sys/welcome1@orclimsi_syn auxiliary sys/welcome1@orcldgimsi_syn
+
+
+run {
+allocate channel ch1 device type disk;
+allocate channel ch2 device type disk;
+allocate auxiliary channel sch1 device type disk;
+allocate auxiliary channel sch2 device type disk;
+duplicate target database for standby 
+ from active database
+ dorecover;
+}
+
+rman target sys/welcome1@orcldgimsi_syn auxiliary sys/welcome1@orclcdgimsi_syn
+
+
+## switch over
+
+
+gap 점검 및 mrp 상태
+select process,delay_mins from v$managed_standby where process like 'MRP%';
+
+select name,value from v$dataguard_stats;
+
+gap 클때만
+recover managed standby database cancel;
+recover managed standby database nodelay using current logfile disconnect;
+
+temp file check 
+
+select ts#, name from v$tempfile;
+
+switchover check
+
+select switchover_status from v$database;
+
+redo log check
+
+select distinct l.group# from v$log l, v$logfile lf
+where l.group# = lf.group#
+and l.status not in ('UNUSED','CLEARING','CLEARING_CURRENT');
+
+
+current 있음 하기
+
+recover managed standby database cancel;
+alter database clear logfile group 3;
+recover managed standby database using current logfile disconnect;
+
+
+alter database commit to switchover to standby with session shutdown;
+
+select open_mode, database_role from v$database;
+
+alter database commit to switchover to primary with session shutdown;
+
+
+
+(online_logfile,primary_role)
+
+
+alter system set log_archive_dest_2='service=ORCL_SYN valid_for=(standby_logfile,standby_role) LGWR ASYNC NOAFFIRM delay=0 reopen=10 db_unique_name=ORCL' scope=both sid='*';
+
+
+alter system set log_archive_dest_3='service=ORCLCDG_SYN valid_for=(online_logfile,primary_role) LGWR ASYNC NOAFFIRM delay=0 reopen=10 db_unique_name=ORCLCDG' scope=both sid='*';
+
+
+
+
+
+
