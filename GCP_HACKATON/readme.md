@@ -1,4 +1,4 @@
-# GCP Hackaton on Kube 3 Team.
+# GCP Hackaton in Kube 3 Team. [Face Recognition on GCP K8s service]
 
 ## GCP 1st try(Install and configure  in VM ,GCP)
 
@@ -84,7 +84,7 @@ cv2.error: OpenCV(3.4.3) /io/opencv/modules/imgproc/src/resize.cpp:4044: error: 
    * container 성공후  K8s 엔진에 클러스터 생성하여 구성해보기
    * replica 구성이나  deployment 연습해 보기
    * 보안 그룹 설정하여 허용된 접근만제어??
-   
+
 
  - references 
 
