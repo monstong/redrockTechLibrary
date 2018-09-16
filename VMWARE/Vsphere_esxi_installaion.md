@@ -102,7 +102,7 @@
    * check summary and done.
    * EXTEND LUN : right click the created datastore and select the property > select extend > select the additional luns
 
-21. patch eSXi security path.
+21. patch eSXi security patch.
  - create the folder in datastore and upload patch file.
 
  - run this command
