@@ -75,6 +75,45 @@ Traceback (most recent call last):
 cv2.error: OpenCV(3.4.3) /io/opencv/modules/imgproc/src/resize.cpp:4044: error: (-215:Assertion failed) !ssize.empty() in function 'resize'
 ```
  - 문제점 : 
+   * external ip 로 접속안되는 이슈 : python live_streaming.py 실행시  external ip로 접속안되는 이슈 발생은
+     VPC 에서 해당 포트에 대한  firewall rule을 적용후 대상 target 또는 전체 인스턴스 허용토록 하면 해결
+     (VM 생성시 http , https trafiic 허용은 tcp 80 과 443 port만 오픈됨)
+
+     1. VPC 메뉴로 이동
+      
+      > GCP console > compute engine > VM instances > 해당 instance 선택 > Network interfaces 에서 view details 선택하면 VPC 메뉴로 이동
+      
+     1. firewall rules 선택해서 `create firewall rule` 선택하여 아래와 같이 설정후 `create`버튼 선택
+
+      - Name : 대략 넣는다 fw-http-5000  (firwall http 500port rule 만들거야~)
+      - logs : 일단 off로 둔다 (추후 운영 서비스면 fw log 남기는게..)
+      - Network : default로 둔다. 
+      - Priority : 1000 기본값 그대로 (이후 유사 룰에 대한 우선권 부여라..)
+      - Direction of traffic : ingres  (일단 다른 default rule 따라했음. 공부 더 필요)
+      - Action on match : Allow  (당연 허용!!)
+      - Targets : Specfified target tags 선택 (all instance 선택하는게 더 편하지만, 그대로 최소한의 보안은 챙기자 ^^)
+      - Target tags : http-server  (web service 태그 입력 - 일단 default 80꺼 따라함)
+      - Source filter : IP ranges 선택
+      - Source IP ranges : 0.0.0.0/0  선택 (외부 IP가 유동이라 일단 요걸로...)
+      - Protocols and ports : Specified protocols and ports > TCP check > 5000 입력(5000번 포트 열겠다라 8080하려면 여기서 변경)
+
+     1. 신규 FW rule 적용 완료 후 테스트 해보면 외부 IP로도 접속이 잘된다.
+
+     ```bash
+     (py3) monstong@instance-1:~/opencv/face_recognition$ curl http://35.237.252.11:5000
+35.237.252.11 - - [23/Sep/2018 07:50:09] "GET / HTTP/1.1" 200 -
+<html>
+  <head>
+    <title>Video Streaming Demonstration</title>
+  </head>
+  <body>
+    <h1>Video Streaming Demonstration</h1>
+    <img id="bg" src="/video_feed">
+  </body>
+     ```
+
+
+
    * 원 소스를 보면 수행되는 OS내 연결되 webcam을 이용하는 걸로 보이는데, 클라우드에 올리면  동영상  링크등 소스 인풋을 네트워크로 받던, 클라우드 스토리지에 저장하여 소스를 리드하던 하는 형식으로 바꿔야할듯 함.
    * Flash 로 웹에서 스트리밍 하는 부분 필요
 
@@ -90,3 +129,6 @@ cv2.error: OpenCV(3.4.3) /io/opencv/modules/imgproc/src/resize.cpp:4044: error: 
 
    * https://ukayzm.github.io/python-face-recognition/
    * https://www.learnopencv.com/install-dlib-on-ubuntu/
+   * https://01010011.blog/2017/04/11/kubernetes-%EB%A1%9C-flask-web-app-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0/
+   * https://www.techrepublic.com/article/how-to-quickly-install-kubernetes-on-ubuntu/
+
