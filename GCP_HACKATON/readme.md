@@ -102,14 +102,14 @@ cv2.error: OpenCV(3.4.3) /io/opencv/modules/imgproc/src/resize.cpp:4044: error: 
      ```bash
      (py3) monstong@instance-1:~/opencv/face_recognition$ curl http://35.237.252.11:5000
 35.237.252.11 - - [23/Sep/2018 07:50:09] "GET / HTTP/1.1" 200 -
-<html>
-  <head>
+    <html>
+      <head>
     <title>Video Streaming Demonstration</title>
-  </head>
-  <body>
-    <h1>Video Streaming Demonstration</h1>
-    <img id="bg" src="/video_feed">
-  </body>
+      </head>
+      <body>
+        <h1>Video Streaming Demonstration</h1>
+        <img id="bg" src="/video_feed">
+      </body>
      ```
 
 
