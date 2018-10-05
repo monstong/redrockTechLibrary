@@ -1,15 +1,15 @@
-# GCP Hackaton in Kube 3 Team. [Face Recognition on GCP K8s service]
+# GCP Hackaton in Kube 3 Team.
+# [Face Recognition on GCP K8s service]
 
 ## GCP 1st try(Install and configure  in VM ,GCP)
 
-1) create vm
+### 1) create vm
 
-```
+```bash
 compute  > vm instance  > create > ubuntu 18.04 LTS
 ```
 
-
-2) install prereqs pkgs
+### 2) install prereqs pkgs
 
 ```bash
 $ sudo apt-get install python3 python3-dev python3-venv
@@ -31,12 +31,12 @@ $ source py3/bin/activate
 (py3) $ pip install flask
 ```
 
-3) face_recognition source가져오기 
+### 3) face_recognition source가져오기 
 
 git clone 명령으로 source를 가져온다.
 face_recognition만을 git으로 가져올 순 없어 opencv를 가져와 해당 폴더만 사용필요
 
-```
+```bash
 (py3) monstong@instance-1:~$ git clone https://github.com/ukayzm/opencv.git
 Cloning into 'opencv'...
 remote: Counting objects: 232, done.
@@ -56,7 +56,7 @@ README.md  camera.py  face_recog.py  knowns  live_streaming.py  templates
 
  - 수행해 본다
 
- ```
+ ```bash
  (py3) monstong@instance-1:~/opencv/face_recognition$ python3 camera.py 
 VIDEOIO ERROR: V4L: can't open camera by index 0
 Traceback (most recent call last):
@@ -102,14 +102,7 @@ cv2.error: OpenCV(3.4.3) /io/opencv/modules/imgproc/src/resize.cpp:4044: error: 
      ```bash
      (py3) monstong@instance-1:~/opencv/face_recognition$ curl http://35.237.252.11:5000
 35.237.252.11 - - [23/Sep/2018 07:50:09] "GET / HTTP/1.1" 200 -
-    <html>
-      <head>
-    <title>Video Streaming Demonstration</title>
-      </head>
-      <body>
-        <h1>Video Streaming Demonstration</h1>
-        <img id="bg" src="/video_feed">
-      </body>
+
      ```
 
 
@@ -117,7 +110,8 @@ cv2.error: OpenCV(3.4.3) /io/opencv/modules/imgproc/src/resize.cpp:4044: error: 
 
 ## GCP 2nd try (creating docker and k8s cluster )
 
-1) Dockerfile 만들기 : opencv 사이트에 있는 dockerfile 참조하여 만든다.
+### 1) Dockerfile 만들기 : opencv 사이트에 있는 dockerfile 참조하여 만든다.
+
  단, port는 5000 으로 설정 (face_recog 의 flask에서 기본 포트 )
  Dlib 설치가 오래 걸리고 사이즈도 커서 Cloud shell에서 하지 않고 별도의 VM 생성하여 수행함
  
@@ -152,17 +146,17 @@ EXPOSE 5000
 CMD ["python", "live_streaming.py"]
 ```
  
-2) 먼저 cloud shell에서 project id를 확인한다. (image 배포 및 cluster 생성시 등에 사용)
+### 2) 먼저 cloud shell에서 project id를 확인한다. (image 배포 및 cluster 생성시 등에 사용)
 
-```
+```bash
 monstong@cloudshell:~ (stellar-aleph-211809)$ gcloud projects list
 PROJECT_ID            NAME              PROJECT_NUMBER
 stellar-aleph-211809  My First Project  263816501665
 ```
 
-3) Docker image build 하기 : 작성한 Dockerfile로  docker image를 생성후 registry에  등록(push)한다.
+### 3) Docker image build 하기 : 작성한 Dockerfile로  docker image를 생성후 registry에  등록(push)한다.
 
-```
+```bash
 monstong@instance-3:~$ python3 -m venv py3
 monstong@instance-3:~$ source py3/bin/activate
 (py3) monstong@instance-3:~$ git clone https://github.com/ukayzm/opencv.git
@@ -196,9 +190,9 @@ Successfully tagged gcr.io/stellar-aleph-211809/face_recog:v1
 
 ```
 
-4) Dockerimage push 하기 (근데 에러가??)
+### 4) Dockerimage push 하기 (근데 에러가??)
 
-```
+```bash
 (py3) monstong@instance-3:~/opencv/face_recognition$ gcloud docker -- push gcr.io/stellar-aleph-211809/face_recog:v1
 WARNING: `gcloud docker` will not be supported for Docker client versions above 18.03.
 
@@ -216,7 +210,7 @@ Got permission denied while trying to connect to the Docker daemon socket at uni
 
 VM에서 gcloud sdk 접속 권한이 없는 상태이므로 `gcloud auth login`을 통해 인증 후 진행한다.
 
-```
+```bash
 (py3) monstong@instance-3:~/opencv/face_recognition$ gcloud auth login
 
 You are running on a Google Compute Engine virtual machine.
@@ -254,7 +248,7 @@ stellar-aleph-211809  My First Project  263816501665
 
 이제 image를 push 하자
 
-```
+```bash
 (py3) monstong@instance-3:~/opencv/face_recognition$ sudo gcloud docker  -- push gcr.io/stellar-aleph-211809/face
 _recog:v1
 WARNING: `gcloud docker` will not be supported for Docker client versions above 18.03.
@@ -288,9 +282,9 @@ b28ef0b6fef8: Layer already exists
 v1: digest: sha256:909d5de2f53c48263e00b02f6d0c0dcf3c941528e530bd6f7ad85b0cf2e5775c size: 369
 ```
 
-5) Dockerimage pull 하기 (cloud shell에서)
+### 5) Dockerimage pull 하기 (cloud shell에서)
 
-```
+```bash
 use `gcloud` as a credential helper, then use `docker` as you would for non-GCR
 registries, e.g. `docker pull gcr.io/project-id/my-image`. Add
 `--verbosity=error` to silence this warning: `gcloud docker
@@ -320,9 +314,9 @@ Status: Downloaded newer image for gcr.io/stellar-aleph-211809/face_recog:v1
 
 ```
 
-6) K8s cluster 생성하자 (워커 노드는 3개로...)
+### 6) K8s cluster 생성하자 (워커 노드는 3개로...)
 
-```
+```bash
 monstong@cloudshell:~ (stellar-aleph-211809)$ gcloud container clusters create face-recog-clu --num-nodes 3 --machine-type n1-standard-1 --zone us-central1-f
 WARNING: Starting in 1.12, new clusters will have basic authentication disabled by default. Basic authentication can be enabled (or disabled) manually using the `--[no-]enable-basic-auth` flag.
 WARNING: Starting in 1.12, new clusters will not have a client certificate issued. You can manually enable (or disable) the issuance of the client certificate using the `--[no-]issue-client-certificate` flag.
@@ -339,10 +333,10 @@ monstong@cloudshell:~ (stellar-aleph-211809)$
 
 ```
 
-7) kubectl 로 container 실행하고 , deployment까지~ 
+### 7) kubectl 로 container 실행하고 , deployment까지~ 
 
 
-```
+```bash
 monstong@cloudshell:~ (stellar-aleph-211809)$ kubectl run face-recog-clu --image=gcr.io/stellar-aleph-211809/face_recog:v1 --port=5000
 deployment.apps "face-recog-clu" created
 monstong@cloudshell:~ (stellar-aleph-211809)$ kubectl expose deployment hello-node --type="LoadBalancer"
@@ -365,7 +359,7 @@ kubernetes       ClusterIP      10.63.240.1    <none>        443/TCP          9m
 
 ```
 
-8) 이제 웹페이지를 보면 뙇~! 
+### 8) 이제 웹페이지를 보면 뙇~! 
 
 우리가 예상한 것
 
@@ -373,10 +367,6 @@ https://ukayzm.github.io/python-face-recognition/
 
 
 실제는??
-
-
-
-
 
 
 
