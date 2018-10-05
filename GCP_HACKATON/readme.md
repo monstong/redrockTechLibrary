@@ -101,8 +101,7 @@ cv2.error: OpenCV(3.4.3) /io/opencv/modules/imgproc/src/resize.cpp:4044: error: 
 
      ```bash
      (py3) monstong@instance-1:~/opencv/face_recognition$ curl http://35.237.252.11:5000
-35.237.252.11 - - [23/Sep/2018 07:50:09] "GET / HTTP/1.1" 200 -
-
+        35.237.252.11 - - [23/Sep/2018 07:50:09] "GET / HTTP/1.1" 200 -
      ```
 
 
@@ -368,7 +367,12 @@ https://ukayzm.github.io/python-face-recognition/
 
 실제는??
 
+<br/>
+<br/>
+<br/>
 
+
+### Epilog...
 
  - 발전할 부분??
    * 인식용 얼굴 사진 이미지는 클라우드 스토리지에 담도록 분리
