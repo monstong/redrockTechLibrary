@@ -370,9 +370,22 @@ https://ukayzm.github.io/python-face-recognition/
 <br/>
 <br/>
 <br/>
+<br/>
+<br/>
+<br/><br/>
+<br/>
+<br/><br/>
+<br/>
+<br/><br/>
+<br/>
+<br/><br/>
+<br/>
+<br/><br/>
+<br/>
+<br/>
 
 
-### Epilog...
+### epilogue...
 
  - 발전할 부분??
    * 인식용 얼굴 사진 이미지는 클라우드 스토리지에 담도록 분리
