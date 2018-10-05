@@ -1,6 +1,8 @@
 # GCP Hackaton in Kube 3 Team.
 # [Face Recognition on GCP K8s service]
 
+✨ 김서준 / 이지윤 / 서준용 / 강홍석 / 주태영 ✨
+
 ## GCP 1st try(Install and configure  in VM ,GCP)
 
 ### 1) create vm
