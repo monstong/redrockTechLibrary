@@ -367,6 +367,8 @@ https://ukayzm.github.io/python-face-recognition/
 
 실제는??
 
+-[실제 보러가기](https://github.com/monstong/redrockTechLibrary/edit/master/GCP_HACKATON/ours.PNG)
+
 <br/>
 <br/>
 <br/>
