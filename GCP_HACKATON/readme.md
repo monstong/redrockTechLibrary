@@ -1,4 +1,5 @@
-# GCP Hackaton in Kube 3 Team. [Face Recognition on GCP K8s service]
+# GCP Hackaton in Kube 3 Team. 
+## [Face Recognition on GCP K8s service]
 
 ## GCP 1st try(Install and configure  in VM ,GCP)
 
@@ -83,7 +84,7 @@ cv2.error: OpenCV(3.4.3) /io/opencv/modules/imgproc/src/resize.cpp:4044: error: 
       
       > GCP console > compute engine > VM instances > 해당 instance 선택 > Network interfaces 에서 view details 선택하면 VPC 메뉴로 이동
       
-     1. firewall rules 선택해서 `create firewall rule` 선택하여 아래와 같이 설정후 `create`버튼 선택
+     2. firewall rules 선택해서 `create firewall rule` 선택하여 아래와 같이 설정후 `create`버튼 선택
 
       - Name : 대략 넣는다 fw-http-5000  (firwall http 500port rule 만들거야~)
       - logs : 일단 off로 둔다 (추후 운영 서비스면 fw log 남기는게..)
@@ -97,19 +98,20 @@ cv2.error: OpenCV(3.4.3) /io/opencv/modules/imgproc/src/resize.cpp:4044: error: 
       - Source IP ranges : 0.0.0.0/0  선택 (외부 IP가 유동이라 일단 요걸로...)
       - Protocols and ports : Specified protocols and ports > TCP check > 5000 입력(5000번 포트 열겠다라 8080하려면 여기서 변경)
 
-     1. 신규 FW rule 적용 완료 후 테스트 해보면 외부 IP로도 접속이 잘된다.
+     2. 신규 FW rule 적용 완료 후 테스트 해보면 외부 IP로도 접속이 잘된다.
 
      ```bash
      (py3) monstong@instance-1:~/opencv/face_recognition$ curl http://35.237.252.11:5000
 35.237.252.11 - - [23/Sep/2018 07:50:09] "GET / HTTP/1.1" 200 -
-    <html>
+     <html>
       <head>
-    <title>Video Streaming Demonstration</title>
+      <title>Video Streaming Demonstration</title>
       </head>
       <body>
         <h1>Video Streaming Demonstration</h1>
         <img id="bg" src="/video_feed">
       </body>
+     </html>
      ```
 
 
@@ -131,4 +133,5 @@ cv2.error: OpenCV(3.4.3) /io/opencv/modules/imgproc/src/resize.cpp:4044: error: 
    * https://www.learnopencv.com/install-dlib-on-ubuntu/
    * https://01010011.blog/2017/04/11/kubernetes-%EB%A1%9C-flask-web-app-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0/
    * https://www.techrepublic.com/article/how-to-quickly-install-kubernetes-on-ubuntu/
+   * https://github.com/ageitgey/face_recognition  (원본 GIT)
 
