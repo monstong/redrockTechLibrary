@@ -117,7 +117,7 @@ vSphere 6.0 부터 제공되는 VCenter Server Appliance는  내부 데이터 �
     ```
     - 접속한 psql 세션을 종료하고 싶으면 `\q` 실행하면 Shell 모드로 빠져나옵니다.
 
-## vPostgres DB related filesystems in VBSA
+## vPostgres DB related filesystems in VCSA
 
 - shell 모드에서 아래와 같이 `df -h`를 수행하였을 때 보여지는 파일시스템중 다음 3개의 영역이 vpostgres DB 영역으로 사용됩니다.
  * /storage/db/ : vpostgres의 메인 Cluster - 여기서 cluster는 postgresql에서 사용되는 인스턴스 단위입니다 - 경로로 일반적인 postgresql에서는 $PGDATA 환경 변수에 저장되는 경로에 해당됩니다. (실제 경로는 /storage/db/vpostgres 입니다.)
@@ -515,4 +515,3 @@ nalyze
 
 
 
- 
