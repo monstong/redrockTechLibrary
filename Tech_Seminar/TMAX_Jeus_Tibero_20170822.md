@@ -24,3 +24,4 @@
 - rolling upgrade는 안되나  down time은  인스턴스 재시작 정도 시간
 
 
+
