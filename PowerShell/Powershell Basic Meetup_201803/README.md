@@ -12,32 +12,32 @@
 Powershell은 다른 Shell script - Unix/Linux 기반의 bash script 이거나, Windows 기존에 조재한 Visual Basic script - 와는 달리 작업을 수행한 결과가 단순한 Text가 아니라, 객체(.net framework 객체) 그자체라는 점이 가장 큰 차이점입니다.
 
 - Powershell 서비스 확인 예시
-```Powershell
-PS C:\WINDOWS\system32> $w32tmSvc = Get-Service -Name W32Time
-PS C:\WINDOWS\system32> $w32tmSvc
+    ```Powershell
+    PS C:\WINDOWS\system32> $w32tmSvc = Get-Service -Name W32Time
+    PS C:\WINDOWS\system32> $w32tmSvc
 
-Status   Name               DisplayName
-------   ----               -----------
-Running  W32Time            Windows Time
+    Status   Name               DisplayName
+    ------   ----               -----------
+    Running  W32Time            Windows Time
 
 
-PS C:\WINDOWS\system32> $w32tmSvc | Stop-Service
-PS C:\WINDOWS\system32> $w32tmSvc
+    PS C:\WINDOWS\system32> $w32tmSvc | Stop-Service
+    PS C:\WINDOWS\system32> $w32tmSvc
 
-Status   Name               DisplayName
-------   ----               -----------
-Stopped  W32Time            Windows Time
-```
+    Status   Name               DisplayName
+    ------   ----               -----------
+    Stopped  W32Time            Windows Time
+    ```
 
 - Bash on Centos 7 서비스 확인 예시 
-```bash
-[root@centos01 ~]# PGSVC=`systemctl status postgresql-11`
-[root@centos01 ~]# echo $PGSVC
-● postgresql-11.service - PostgreSQL 11 database server Loaded: loaded (/usr/lib/systemd/system/postgresql-11.service; enabled; vendor preset: disabled) Active: active (running) since Sat 2019-03-09 01:11:08 EST; 4h 55min ago Docs: https://www.postgresql.org/docs/11/static/ Main PID: 1097 (postmaster) CGroup: /system.slice/postgresql-11.service ├─1097 /usr/pgsql-11/bin/postmaster -D /var/lib/pgsql/11/data/ ├─1151 postgres: logger ├─1287 postgres: checkpointer ├─1288 postgres: background writer ├─1290 postgres: walwriter ├─1291 postgres: autovacuum launcher ├─1292 postgres: stats collector └─1294 postgres: logical replication launcher Mar 09 01:11:07 centos01 systemd[1]: Starting PostgreSQL 11 database server
-...후략...
-```
+    ```bash
+    [root@centos01 ~]# PGSVC=`systemctl status postgresql-11`
+    [root@centos01 ~]# echo $PGSVC
+    postgresql-11.service - PostgreSQL 11 database server Loaded: loaded (/usr/lib/systemd/system/postgresql-11.service; enabled; vendor preset: disabled) Active: active (running) since Sat 2019-03-09 01:11:08 EST; 4h 55min ago Docs: https://www.postgresql.org/docs/11/static/ Main PID: 1097 (postmaster) CGroup: /system.slice/postgresql-11.service ├─1097 /usr/pgsql-11/bin/postmaster -D /var/lib/pgsql/11/data/ ├─1151 postgres: logger ├─1287 postgres: checkpointer ├─1288 postgres: background writer ├─1290 postgres: walwriter ├─1291 postgres: autovacuum launcher ├─1292 postgres: stats collector └─1294 postgres: logical replication launcher Mar 09 01:11:07 centos01 systemd[1]: Starting PostgreSQL 11 database server
+    ...후략...
+    ```
 
-## **3, Basic Syntax and ISE
+## **3, Basic Syntax and ISE**
 
 - Use Tab key : 기본적으로 Powershell command 창에서 <kbd>Tab</kbd> 키를 이용한 자동완성을 지원합니다. comdlet이 잘 기억나지 않을 때 많이 사용합니다.
 
@@ -114,24 +114,25 @@ Stopped  W32Time            Windows Time
 - UNIx/Linux shell compatible command : ls , cd , echo 등 shell script에 익숙한 유저를 위한 alias 로 몇가지 기본 OS 명령들이 동작합니다.
     * 이외에도 긴이름의 cmdlet 을 별칭으로 줄인 경우도 있습니다.
       (예: gwmi = Get-WmiObject)
-```
-PS C:\Program Files> Get-Help ls
+    ```
+    PS C:\Program Files> Get-Help ls
 
-이름
-    Get-ChildItem
+    이름
+        Get-ChildItem
 
-구문
-    Get-ChildItem [[-Path] <string[]>] [[-Filter] <string>]  [<CommonParameters>]
+    구문
+        Get-ChildItem [[-Path] <string[]>] [[-Filter] <string>]  [<CommonParameters>]
 
-    Get-ChildItem [[-Filter] <string>]  [<CommonParameters>]
+        Get-ChildItem [[-Filter] <string>]  [<CommonParameters>]
 
 
-별칭
-    gci
-    ls
-    dir
-... 후략 ...
-```
+    별칭
+        gci
+        ls
+        dir
+    ... 후략 ...
+    ```
+
 - Differenct Variable notation from Windows classic CLI : Powershell에서의 변수는 $로 시작합니다. 기존의 classic command line에서 %varname% 로 표현되던 것과 차이점이 있습니다.
 
 - Cmdlet Naming Pattern 
@@ -142,144 +143,144 @@ PS C:\Program Files> Get-Help ls
 
 - Basic Get Cmdlet usage pattern 
     * Get-Something / Select-object 조합
-    ```powershell
-    PS C:\Program Files> Get-Service | Select-Object Name, Status
+        ```powershell
+        PS C:\Program Files> Get-Service | Select-Object Name, Status
 
-    Name                                      Status
-    ----                                      ------
-    AdobeARMservice                          Running
-    AdobeFlashPlayerUpdateSvc                Stopped
-    AJRouter                                 Stopped
-    ALG                                      Stopped
-    ...후략...
-    ```
+        Name                                      Status
+        ----                                      ------
+        AdobeARMservice                          Running
+        AdobeFlashPlayerUpdateSvc                Stopped
+        AJRouter                                 Stopped
+        ALG                                      Stopped
+        ...후략...
+        ```
     
     * Get-Something / Select-object /Where-object 조합
-    ```powershell
-    PS C:\Program Files> Get-Service | Select-Object Name, Status | Where-Object { $_.Name -like 'Web*'}
+        ```powershell
+        PS C:\Program Files> Get-Service | Select-Object Name, Status | Where-Object { $_.Name -like 'Web*'}
 
-    Name                 Status
-    ----                 ------
-    WebClient           Stopped
-    WebConferenceProVDI Running
-
-
-    PS C:\Program Files> Get-Service | Select-Object Name, Status | Where-Object { $_.Name -eq 'winrm'}
-
-    Name   Status
-    ----   ------
-    WinRM Stopped
+        Name                 Status
+        ----                 ------
+        WebClient           Stopped
+        WebConferenceProVDI Running
 
 
-    PS C:\Program Files> Get-Service | Select-Object Name, Status | Where-Object { $_.Status -eq 'Stopped'}
+        PS C:\Program Files> Get-Service | Select-Object Name, Status | Where-Object { $_.Name -eq 'winrm'}
 
-    Name                                      Status
-    ----                                      ------
-    AdobeFlashPlayerUpdateSvc                Stopped
-    AJRouter                                 Stopped
-    ALG                                      Stopped
-    ALMountService                           Stopped
-    AppIDSvc                                 Stopped
-    AppMgmt                                  Stopped
-    AppReadiness                             Stopped
-    AppVClient                               Stopped
-    AppXSvc                                  Stopped
-    ...후략...
-    ```
+        Name   Status
+        ----   ------
+        WinRM Stopped
+
+
+        PS C:\Program Files> Get-Service | Select-Object Name, Status | Where-Object { $_.Status -eq 'Stopped'}
+
+        Name                                      Status
+        ----                                      ------
+        AdobeFlashPlayerUpdateSvc                Stopped
+        AJRouter                                 Stopped
+        ALG                                      Stopped
+        ALMountService                           Stopped
+        AppIDSvc                                 Stopped
+        AppMgmt                                  Stopped
+        AppReadiness                             Stopped
+        AppVClient                               Stopped
+        AppXSvc                                  Stopped
+        ...후략...
+        ```
 
     * Get-Something with argument / Format-list 조합
-    ```powershell
-    PS C:\Program Files> Get-Service | select -last 1
+        ```powershell
+        PS C:\Program Files> Get-Service | select -last 1
 
-    Status   Name               DisplayName
-    ------   ----               -----------
-    Running  ZeroConfigService  Intel(R) PROSet/Wireless Zero Confi...
+        Status   Name               DisplayName
+        ------   ----               -----------
+        Running  ZeroConfigService  Intel(R) PROSet/Wireless Zero Confi...
 
 
-    PS C:\Program Files> Get-Service | select -last 3 | Format-Table displayname, name, status -AutoSize
+        PS C:\Program Files> Get-Service | select -last 3 | Format-Table displayname, name, status -AutoSize
 
-    DisplayName                                         Name               Status
-    -----------                                         ----               ------
-    Xbox Accessory Management Service                   XboxGipSvc        Stopped
-    Xbox Live 네트워킹 서비스                           XboxNetApiSvc     Stopped
-    Intel(R) PROSet/Wireless Zero Configuration Service ZeroConfigService Running
-    ```
+        DisplayName                                         Name               Status
+        -----------                                         ----               ------
+        Xbox Accessory Management Service                   XboxGipSvc        Stopped
+        Xbox Live 네트워킹 서비스                           XboxNetApiSvc     Stopped
+        Intel(R) PROSet/Wireless Zero Configuration Service ZeroConfigService Running
+        ```
 
 - Flow control statement : 자주 사용하는 제어 구문을 살펴보겠습니다. 가장 많이(?) 쓰이는 If/else 구문과 For loop의 일종인 foreach 구문입니다.
 
     * IF/Else statement
 
-    ```powershell
-    PS C:\Program Files> Get-Process  | Where-Object {$_.ProcessName -eq 'iexplore'}
+        ```powershell
+        PS C:\Program Files> Get-Process  | Where-Object {$_.ProcessName -eq 'iexplore'}
 
-    Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
-    -------  ------    -----      -----     ------     --  -- -----------
-    1228     121    62372      88628       9.78  11088   1 iexplore
-    464      62    16832      16428       0.78  14268   1 iexplore
-    782      90    26420      40372       4.92  15768   1 iexplore
+        Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+        -------  ------    -----      -----     ------     --  -- -----------
+        1228     121    62372      88628       9.78  11088   1 iexplore
+        464      62    16832      16428       0.78  14268   1 iexplore
+        782      90    26420      40372       4.92  15768   1 iexplore
 
 
-    PS C:\Program Files> $procIE = Get-Process  | Where-Object {$_.ProcessName -eq 'iexplore'}
-    PS C:\Program Files> $procIE.Count
-    3
+        PS C:\Program Files> $procIE = Get-Process  | Where-Object {$_.ProcessName -eq 'iexplore'}
+        PS C:\Program Files> $procIE.Count
+        3
 
-    PS C:\Program Files> if ( $procIE.Count -ge 1) {
-     Write-Host "IE Process normal!" -ForegroundColor Green
-     } else {
-     Write-Warning "IE Process down!"
-     }
-    IE Process normal!
-    PS C:\Program Files> if ( $procIE.Count -ge 1) {
-     Write-Host "IE Process normal!" -ForegroundColor Green
-     } else {
-     Write-Warning "IE Process down!"
-     }
-    IE Process normal!
-    PS C:\Program Files> $procIE = Get-Process  | Where-Object {$_.ProcessName -eq 'iexplore'}
-    PS C:\Program Files> if ( $procIE.Count -ge 1) {
-     Write-Host "IE Process normal!" -ForegroundColor Green
-     } else {
-     Write-Warning "IE Process down!"
-     }
-    경고: IE Process down!
-    ```
+        PS C:\Program Files> if ( $procIE.Count -ge 1) {
+        Write-Host "IE Process normal!" -ForegroundColor Green
+        } else {
+        Write-Warning "IE Process down!"
+        }
+        IE Process normal!
+        PS C:\Program Files> if ( $procIE.Count -ge 1) {
+        Write-Host "IE Process normal!" -ForegroundColor Green
+        } else {
+        Write-Warning "IE Process down!"
+        }
+        IE Process normal!
+        PS C:\Program Files> $procIE = Get-Process  | Where-Object {$_.ProcessName -eq 'iexplore'}
+        PS C:\Program Files> if ( $procIE.Count -ge 1) {
+        Write-Host "IE Process normal!" -ForegroundColor Green
+        } else {
+        Write-Warning "IE Process down!"
+        }
+        경고: IE Process down!
+        ```
 
     * Foreach statement
 
-    ```powershell
-    PS C:\Program Files> Get-ChildItem -path c:\windows  | where { $_.Extension -eq '.log'}
+        ```powershell
+        PS C:\Program Files> Get-ChildItem -path c:\windows  | where { $_.Extension -eq '.log'}
 
 
-        디렉터리: C:\windows
+            디렉터리: C:\windows
 
 
-    Mode                LastWriteTime         Length Name
-    ----                -------------         ------ ----
-    -a----     2018-03-11   오후 7:28         123490 AhnInst.log
-    -a----     2018-05-25   오후 4:44          14767 comsetup.log
-    -a----     2018-05-25   오전 8:02           2526 DDACLSys.log
-    -a----     2018-12-22   오후 2:36          16748 DPINST.LOG
-    -a----     2018-05-25   오후 4:40           4179 DtcInstall.log
-    -a----     2019-02-22  오전 10:12         186472 PFRO.log
-    -a----     2018-10-16   오후 1:06              0 setuperr.log
-    -a----     2019-03-09   오후 3:07            276 WindowsUpdate.log
+        Mode                LastWriteTime         Length Name
+        ----                -------------         ------ ----
+        -a----     2018-03-11   오후 7:28         123490 AhnInst.log
+        -a----     2018-05-25   오후 4:44          14767 comsetup.log
+        -a----     2018-05-25   오전 8:02           2526 DDACLSys.log
+        -a----     2018-12-22   오후 2:36          16748 DPINST.LOG
+        -a----     2018-05-25   오후 4:40           4179 DtcInstall.log
+        -a----     2019-02-22  오전 10:12         186472 PFRO.log
+        -a----     2018-10-16   오후 1:06              0 setuperr.log
+        -a----     2019-03-09   오후 3:07            276 WindowsUpdate.log
 
 
-    PS C:\Program Files> $logfiles = Get-ChildItem -path c:\windows  | where { $_.Extension -eq '.log'}
-    PS C:\Program Files>  foreach ( $log in $logfiles) {
-    >>  $sizeKb =[System.Math]::Round($log.length/1024,2)
-    >> write-host $log.name, $sizeKb
-    >> }
-    AhnInst.log 120.6
-    comsetup.log 14.42
-    DDACLSys.log 2.47
-    DPINST.LOG 16.36
-    DtcInstall.log 4.08
-    PFRO.log 182.1
-    setuperr.log 0
-    WindowsUpdate.log 0.27
+        PS C:\Program Files> $logfiles = Get-ChildItem -path c:\windows  | where { $_.Extension -eq '.log'}
+        PS C:\Program Files>  foreach ( $log in $logfiles) {
+        >>  $sizeKb =[System.Math]::Round($log.length/1024,2)
+        >> write-host $log.name, $sizeKb
+        >> }
+        AhnInst.log 120.6
+        comsetup.log 14.42
+        DDACLSys.log 2.47
+        DPINST.LOG 16.36
+        DtcInstall.log 4.08
+        PFRO.log 182.1
+        setuperr.log 0
+        WindowsUpdate.log 0.27
 
-    ```
+        ```
 
 ## **4. Powershell with WMI**
 대부분 Powershell 내장 cmdlet으로 Windows시스템 정보를 조회할 수 있지만, 좀 더 자세한 정보를 조회하고 싶을때는 Powershell도 동일하게 WMI Object를 직접 조회해야 합니다. (레지스트리키도 마찬가지로 조회가능)
@@ -363,10 +364,11 @@ tml | Out-File ips.html
 
 - Configuring WinRM on Target Server : 가장 쉽게 WinRM을 Powershell에서 설정하는 방법이나, 개인적으로 권고하진 않습니다. WinRM 설정은 별도로 보안 설정에 맞게 하는 게 좋습니다.
 
-```
-PS> Enable-PSRemoting -Force
-PS> Set-Item wsman:\localhost\client\trustedhosts *
-PS> Restart-Service WinRM
+    ```Powershell
+    PS> Enable-PSRemoting -Force
+    PS> Set-Item wsman:\localhost\client\trustedhosts *
+    PS> Restart-Service WinRM
+    ```
 
 - About Credential : Remote Server로 접속시 필요한 접속 정보를 Powershell에서는 Credential이란 객체로 생성하여 관리할 수 있습니다. 
     * User/Password 직접 입력 방식
@@ -382,13 +384,55 @@ PS> Restart-Service WinRM
 
 ## **6. Simple LAB : Monitoring/Event Logging**
 
-- creating owned powershell script
+- 2가지 방식 중 선택(본Lab에서는 2번째 방식으로 수행함)
+    * 중계 서버에서 WinRM을 통하여 주기적으로 여러 대상 서버로 모니터링 스크립트 수행 
+    * 각 대상 서버내 모니터링 스크립트를 주기적으로 수행
 
-- Eventlogging
+- creating owned powershell script : 아래의 양식을 이용하여 각자 원하는 모니터링 스크립트를 만들어 봅시다.
+
+    ```powershell
+
+    $checkResult
+    $checThreshold
+
+    # checking status
+
+    # creating event log
+
+    ```
+
+- Eventlogging : Powershell로 Event log를 생성할 수 있습니다.
+원하는 ID와 event type으로 생성해 봅시다.
+
+    * New-Eventlog : Custom Event 정의
+    * Write-Eventlog : Custom Event 발생
+
+        ```powershell
+        New-EventLog -LogName System -Source MyTestApp
+
+        Write-EventLog 
+            -LogName Application 
+            -Source MyTestApp 
+            -EntryType Error 
+            -Message "XXX Process Down" 
+            -EventId 888
+        ```
 
 - registering Task scheduler 
 
-- Monitoring Test
+    ```
+    $Trigger= New-ScheduledTaskTrigger -At 10:00am –Daily # Specify the trigger settings
+    $User= "NT AUTHORITY\SYSTEM" # Specify the account to run the script
+    $Action= New-ScheduledTaskAction -Execute "PowerShell.exe" -Argument "C:\PS\StartupScript.ps1" # Specify what program to run and with its parameters
+
+    Register-ScheduledTask -TaskName "Monitor1" -Trigger $Trigger -User $User -Action $Action -RunLevel Highest –Force # Specify the name of the task
+    ```
+
+- Monitoring Test : 장애를 발생시키고 생성한 스크립트를 실행을 하거나, 아래 명령으로 예약된 작업을 manual하게 실행해 봅니다.
+
+    ```
+    PS C:\> Start-ScheduledTask -TaskName "Monitor1"
+    ```
 
 ## **7. Powershell with Module**
 
