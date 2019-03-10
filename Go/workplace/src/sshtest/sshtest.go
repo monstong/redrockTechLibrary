@@ -16,6 +16,7 @@ func main() {
 	// implementation of AuthMethod via the Auth field in ClientConfig,
 	// and provide a HostKeyCallback.
 
+
 	config := &ssh.ClientConfig{
 		User: "oracle",
 		Auth: []ssh.AuthMethod{
