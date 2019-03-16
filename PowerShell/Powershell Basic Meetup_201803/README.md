@@ -41,10 +41,10 @@ Powershell은 다른 Shell script - Unix/Linux 기반의 bash script 이거나, 
 
 - Use Tab key : 기본적으로 Powershell command 창에서 <kbd>Tab</kbd> 키를 이용한 자동완성을 지원합니다. comdlet이 잘 기억나지 않을 때 많이 사용합니다.
 
-- Use recommended version : Windows 2008R2/Windows7 이상에서는 기본적으로 Powershell 설치가 되어 있으나, 잘(?) 사용하기 위해서는 Windows2012R2/Windows 8.1에 기본으로 깔려있는 Powershell 버전을 사용하기를 권고합니다. Powershell 버전이 낮을 경우 Powercli가 지원이 되지 않으며, Powershell 버전 업을 위해서는 Windows management Pack(이중에 Powershell이 포함되어 있음) 과 그에 대응하는 .Net Framework 업데이트가 필요합니다.
+- Use recommended version : Windows 2008R2/Windows7 이상에서는 기본적으로 Powershell 설치가 되어 있으나, 잘(?) 사용하기 위해서는 Windows2012R2/Windows 8.1에 기본으로 깔려있는 Powershell 버전을 사용하기를 권고합니다. Powershell 버전이 낮을 경우 Powercli가 지원이 되지 않으며, Powershell 버전 업을 위해서는 Windows management Framework(https://docs.microsoft.com/ko-kr/powershell/wmf/overview) 과 그에 대응하는 .Net Framework 업데이트가 필요합니다.
 
     ```powershell
-    PS C:\WINDOWS\system32> $psver
+    PS C:\WINDOWS\system32> $psver + {Tab key}
     PS C:\WINDOWS\system32> $PSVersionTable
 
     Name                           Value
@@ -59,7 +59,7 @@ Powershell은 다른 Shell script - Unix/Linux 기반의 bash script 이거나, 
     SerializationVersion           1.1.0.1
 
 
-    PS C:\WINDOWS\system32>
+    PS C:\WINDOWS\system32>$env:COMPU + {Tab key}
     ```
 
 - Use `Get-Command` and `Get-Help` : 명령어가 아예 생각이 나지 않을때나 특정 명령어의 사용법이 궁금할 때 사용해 봅시다.
@@ -96,7 +96,9 @@ Powershell은 다른 Shell script - Unix/Linux 기반의 bash script 이거나, 
             -- 이 cmdlet에 대한 도움말 항목을 온라인으로 보려면 "Get-Help Write-Output -Online"을 입력하거나
             https://go.microsoft.com/fwlink/?LinkID=113427(으)로 이동하십시오.
 
+    PS C:\Program Files> get-help Write-Output -Online
     ```
+
 - Use Powershell ISE : Powershell이 설치되어 있는 경우 기본적으로 Powershell ISE 라고 하는 Powershell 전용의 IDE(통합 개발 환경 - Eclipse나 Visual studio같은) 을 제공합니다.
 코딩 작성시 자동 들여쓰기, help, 자동 완성 기능과  디버깅 기능을 제공합니다.
 
@@ -133,7 +135,7 @@ Powershell은 다른 Shell script - Unix/Linux 기반의 bash script 이거나, 
     ... 후략 ...
     ```
 
-- Differenct Variable notation from Windows classic CLI : Powershell에서의 변수는 $로 시작합니다. 기존의 classic command line에서 %varname% 로 표현되던 것과 차이점이 있습니다.
+- Different Variable notation from Windows classic CLI : Powershell에서의 변수는 $로 시작합니다. 기존의 classic command line에서 %varname% 로 표현되던 것과 차이점이 있습니다.
 
 - Cmdlet Naming Pattern 
     * Get-Something : 특정 또는 전체 해당 객체의 정보를 보여줌
@@ -335,8 +337,7 @@ DHCPEnabled IPAddress                                  DefaultIPGateway DNSDomai
        True {192.168.75.1, fe80::45e5:b268:953a:80e9}                             VMnetAdapter VMware Virtual Ethern...
 
 
-PS C:\> (Get-WmiObject -Class Win32_NetworkAdapterConfiguration).Where{$_.IPAddress}|Format-Table -AutoSize| ConvertTo-H
-tml
+PS C:\> (Get-WmiObject -Class Win32_NetworkAdapterConfiguration).Where{$_.IPAddress}|Format-Table -AutoSize| ConvertTo-Html
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -355,8 +356,7 @@ tml
 <tr><td>cf522b78d86c486691226b40aa69e95c</td><td></td><td></td><td></td><td></td><td></td></tr>
 </table>
 </body></html>
-PS C:\> (Get-WmiObject -Class Win32_NetworkAdapterConfiguration).Where{$_.IPAddress}|Format-Table -AutoSize| ConvertTo-H
-tml | Out-File ips.html
+PS C:\> (Get-WmiObject -Class Win32_NetworkAdapterConfiguration).Where{$_.IPAddress}|Format-Table -AutoSize| ConvertTo-Html | Out-File ips.html
 
 ```
 
@@ -364,11 +364,110 @@ tml | Out-File ips.html
 
 - Configuring WinRM on Target Server : 가장 쉽게 WinRM을 Powershell에서 설정하는 방법이나, 개인적으로 권고하진 않습니다. WinRM 설정은 별도로 보안 설정에 맞게 하는 게 좋습니다.
 
-    ```Powershell
-    PS> Enable-PSRemoting -Force
-    PS> Set-Item wsman:\localhost\client\trustedhosts *
-    PS> Restart-Service WinRM
-    ```
+    * To use `Enable-PSRemoting` cmdlet (easy way)
+        ```Powershell
+        (Run as Administrator로 Powershell 실행)
+        PS> Enable-PSRemoting -Force
+        PS> Set-Item wsman:\localhost\client\trustedhosts *
+        PS> Restart-Service WinRM
+        ```
+
+    * To configure PSRemoting manually (recommanded)
+        ```powershell
+        (Run as Administrator로 Powershell 실행)
+        PS> New-SelfSignedCertificate -DnsName $env:COMPUTERNAME -CertStoreLocation Cert:\LocalMachine\My\
+
+        PSParentPath: Microsoft.PowerShell.Security\Certificate::LocalMachine\My
+
+        Thumbprint                                Subject
+        ----------                                -------
+        6C9D6FFDDEFE09373F4CCF5264EA8B6DB8F46CD7  CN=DESKTOP-DKSDFSDF
+
+        => Thumbprint를 기록해 놓읍시다. WinRM에 SSL 인증서 등록시 사용됩니다.
+        
+        (WinRM 현재 설정을 확인합니다.)
+        PS> winrm get winrm/config/service
+        WSManFault
+            Message = 클라이언트가 요청에 지정된 대상에 연결할 수 없습니다. 대상에서 서비스가 실행되고 요청을 수락하고 있는지 확인하십시오. 대상에서 실행 중인 WS-Management 서비스에 대한 로그 및 설명서를 참조하십시오. 대부분의 경우 IIS 또는 WinRM입니다. 대상이 WinRM 서비스인 경우 대상에서 "winrm quickconfig" 명령을 사용하여 WinRM 서비스를 분석하고 구성하십시오.
+
+        오류 번호:  -2144108526 0x80338012
+        클라이언트가 요청에 지정된 대상에 연결할 수 없습니다. 대상에서 서비스가 실행되고 요청을 수락하고 있는지 확인하십시오. 대상에서 실행 중인 WS-Management 서비스에 대한 로그 및 설명서를 참조하십시오. 대부분의 경우 IIS 또는 WinRM입니다. 대상이 WinRM 서비스인 경우 대상에서 "winrm quickconfig" 명령을 사용하여 WinRM 서비스를 분석하고 구성하십시오.
+
+        => 에러가 발생합니다. winrm quickconfig을 수행해도 되지만 Windows firwall 중지한 경우 2차 에러 발생할수 있습니다. 그냥 WinRM만 시작해 봅니다. (Winrm은 2012R2 부터는 기본적으로 사용가능하게 되어있습니다.)
+
+        (WinRM 서비스 시작후 다시 설정을 확인합니다.)
+        PS> Start-Service WinRM
+        PS> winrm get winrm/config/service
+        Service
+            RootSDDL = O:NSG:BAD:P(A;;GA;;;BA)(A;;GR;;;IU)S:P(AU;FA;GA;;;WD)(AU;SA;GXGW;;;WD)
+            MaxConcurrentOperations = 4294967295
+            MaxConcurrentOperationsPerUser = 1500
+            EnumerationTimeoutms = 240000
+            MaxConnections = 300
+            MaxPacketRetrievalTimeSeconds = 120
+            AllowUnencrypted = false            => (1) Basic auth는 기본적으로 꺼져있습니다. (HTTP로는 사용 불가)
+            Auth
+                Basic = false                    => (2) Basic auth는 기본적으로 꺼져있습니다. (HTTP로는 사용 불가)
+                Kerberos = true
+                Negotiate = true
+                Certificate = false
+                CredSSP = false
+                CbtHardeningLevel = Relaxed
+            DefaultPorts
+                HTTP = 5985                    => (3) Basic Auth 로 접근시 사용 통신 포트입니다.
+                HTTPS = 5986                    => (4) SSL Auth 로 접근시 사용 통신 포트입니다.
+            IPv4Filter = *
+            IPv6Filter = *
+            EnableCompatibilityHttpListener = false
+            EnableCompatibilityHttpsListener = false
+            CertificateThumbprint
+            AllowRemoteAccess = true
+
+            (HTTPS를 사용하기 위해 HTTPS용 Listener를 등록해 주어야 합니다. 현재 설정을 확인해 봅니다.)
+        PS> winrm get winrm/config/Listener?Address=*+Transport=HTTPS
+        WSManFault
+            Message
+                ProviderFault
+                    WSManFault
+                        Message = WS-Management 서비스가 요청을 처리할 수 없습니다. 서비스가 리소스 URI와 선택기로 식별되는 리소스를 찾을 수 없습니다.
+
+        오류 번호:  -2144108544 0x80338000
+        WS-Management 서비스가 요청을 처리할 수 없습니다. 서비스가 리소스 URI와 선택기로 식별되는 리소스를 찾을 수 없습니다.
+
+        PS C:\WINDOWS\system32> winrm create -?
+        Windows 원격 관리 명령줄 도구
+
+        ... 중략 ...
+
+        예: 모든 IP에 대한 HTTPS 수신기 인스턴스 생성:
+        winrm create winrm/config/Listener?Address=*+Transport=HTTPS @{Hostname="HOST";CertificateThumbprint="XXXXXXXXXX"}
+        참고: XXXXXXXXXX는 40자리 16진수 문자열을 나타냅니다. 구성 도움말을 참고하십시오.
+
+        => HTTPS 수신기 설정인 위 예제를 이용한 특정한 IP 주소만 Listener에 등록해 줍니다.
+
+        PS> winrm create winrm/config/Listener?Address=192.168.200.200+Transport=HTTPS @{Hostname="{your hostname}";CertificateThumbprint="{your certificate thumbprint"}
+        => Powershell에서 실행오류 발생시 CMD창을 관리자모드로 실행하여 수행해 줍니다.
+
+        PS> winrm get winrm/config/Listener?Address=*+Transport=HTTPS
+        => 다시 확인하면 정상적으로 HTTPS 수신기가 등록되어 있음을 확인할 수 있습니다. (디폴트 5986 포트)
+
+        (원격 실행 정책을 RemoteSigned로 변경해 줍니다. 인증서 기반 원격 명령 수행은 허용하게 합니다.)
+        PS C:\WINDOWS\system32> Get-ExecutionPolicy
+        RemoteSigned
+        PS C:\WINDOWS\system32> Set-ExecutionPolicy RemoteSigned
+
+        실행 규칙 변경
+        실행 정책은 신뢰하지 않는 스크립트로부터 사용자를 보호합니다. 실행 정책을 변경하면 about_Execution_Policies 도움말
+        항목(https://go.microsoft.com/fwlink/?LinkID=135170)에 설명된 보안 위험에 노출될 수 있습니다. 실행 정책을
+        변경하시겠습니까?
+        [Y] 예(Y)  [A] 모두 예(A)  [N] 아니요(N)  [L] 모두 아니요(L)  [S] 일시 중단(S)  [?] 도움말 (기본값은 "N"):y
+
+        (WinRM을 재시작해 줍니다.)
+        PS> Restart-SErvice WinRM
+        ```
+
+    * Ansible용 WinRM 설정 script 사용 : https://github.com/ansible/ansible/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
+    
 
 - About Credential : Remote Server로 접속시 필요한 접속 정보를 Powershell에서는 Credential이란 객체로 생성하여 관리할 수 있습니다. 
     * User/Password 직접 입력 방식
@@ -378,9 +477,34 @@ tml | Out-File ips.html
 
 - 위의 4가지 방식중 하나의 접속정보를 이용하여 아래 2가지 방식 중 하나로 Remote 서버로 접속 및 원하는 명령을 수행할 수 있습니다.
 
-- using Enter-PSSession 
-- using invoke-command
+- using Enter-PSSession : SSH로 접속하듯이 PSsession을 생성하여 Interactive하게 명령을 주고 받을 수 있습니다.
+    ```powershell
+    PS> $so = New-PsSessionOption -SkipCACheck -SkipCNCheck
+    PS> Enter-PSSession -ComputerName {your hostname} -Credential {username or domain username} -UseSSL -SessionOption $so
+    => 첫번째 방식
 
+    PS> $so = New-PsSessionOption -SkipCACheck -SkipCNCheck
+    PS> Enter-PSSession -ComputerName {your hostname} -Credential (Get-Credential) -UseSSL -SessionOption $so
+    => 두번째 방식 (ID,PASSWORD를 물어보는 윈도우 창에 접속정보를 입력합니다.)
+    ```
+
+- using invoke-command : 단일 커맨드 또는 스크립트를 수행하게 합니다. 
+    ```powershell
+    PS> $so = New-PsSessionOption -SkipCACheck -SkipCNCheck
+    PS> $secpasswd = ConvertTo-SecureString "*******" -AsPlainText -Force
+    PS> $mycreds = New-Object System.Management.Automation.PSCredential ("testdm\Administrator", $secpasswd)
+    PS> Invoke-Command -ComputerName host01,host02 -SessionOption $so -ScriptBlock {Get-Process} -Credential $mycreds -UseSSL
+    => 세번째 방식
+
+    PS> $id = "testdm\Administrator"
+    PS> $secpasswd = ConvertTo-SecureString  "*******" -AsPlainText -Force
+    PS> $mycred = New-Object System.Management.Automation.PSCredential ($id, $secpasswd)
+    PS> $mycred | Export-Clixml "a.xml"   => 파일에 저장
+    PS> $reusecred = Import-Clixml "a.xml" => 파일에서 불러오기
+    PS> $so = New-PsSessionOption -SkipCACheck -SkipCNCheck
+    PS> Invoke-Command -ScriptBlock { cmd /c shutdown /s /t 1 } -ComputerName host01  -SessionOption $so -Credential $reusecred -UseSSL
+    => 네번째 방식
+    ```
 
 ## **6. Simple LAB : Monitoring/Event Logging**
 
