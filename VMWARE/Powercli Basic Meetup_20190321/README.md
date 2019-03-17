@@ -51,8 +51,11 @@
         (또는 Download page에서 Module zip 파일 직접 다운로드후 Powershell Module Path내 압축 해제합니다.)
 
         PS> $env:PSModulePath
-        C:\Users\kuhel\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
-        => 위 예시에서 전체 유저가 사용가능하게 하기 위해 모듈 Path중 C:\Program Files\WindowsPowerShell\Modules경로에 아래와 같이 위치하도록 압축을 해제합니다.
+        C:\Users\kuhel\Documents\WindowsPowerShell\Modules;
+        C:\Program Files\WindowsPowerShell\Modules;
+        C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+        => 위 예시에서 전체 유저가 사용가능하게 하기 위해 모듈 Path중 
+        C:\Program Files\WindowsPowerShell\Modules경로에 아래와 같이 위치하도록 압축을 해제합니다.
 
         PS> ls 'C:\Program Files\WindowsPowerShell\Modules\'
 
@@ -88,6 +91,7 @@
 
         PS> Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -ParticipateInCeip:$false
         ```
+ - Powercli는 Powershell Core(Linux용) 를 통해 Ubuntu나 CentOS에도 설치가 가능하지만, 일부 기능이 지원이 되지 않습니다.
 
 ## **3. Connecting to vcenter or ESXi Host**
 
@@ -95,9 +99,9 @@
 
     1. VMware HOL 사이트 접속 (필요시 계정 생성 ) : https://labs.hol.vmware.com 접속하여 계정이 없을경우 간단하게 가입후 접속합니다.
 
-    1. Powercli 관련 LAB 검색 : 검색창에 `Powercli`로 검색시 **`HOL-1911-05-SDC - VMware vSphere Automation - PowerCLI`** Lab 과정이 나오면 <kbd>ENROLL</kdb> 을 선택합니다.
+    1. Powercli 관련 LAB 검색 : 검색창에 `Powercli`로 검색시 **`HOL-1911-05-SDC - VMware vSphere Automation - PowerCLI`** Lab 과정이 나오면 <kbd>ENROLL</kbd> 을 선택합니다.
 
-    1. Lab detail을 확인하시고 `START THIS LAB`을 선택하면 환경 점검 메뉴가 나옵니다. `RUN TEST`후 `START LAB`을 선택하면 LAB 화면에 접속됩니다.
+    1. Lab detail을 확인하시고 <kbd>START THIS LAB</kbd>을 선택하면 환경 점검 메뉴가 나옵니다. <kbd>RUN TEST</kbd> 후 <kbd>START LAB</kbd> 을 선택하면 LAB 화면에 접속됩니다.
 
     1. 가상 Windows 환경에서 Chrome 웹브라우저를 수행하면 기본적인 기구성된 vsphere 환경과 관련된 URL들이 등록되어 있는 걸 확인할 수 있습니다.
 
@@ -132,7 +136,7 @@
     PS> New-Folder -Location (Get-Folder -NoRecursion) -Name Test -ErrorAction:Stop
     => 해당 cmdlet 수행에 error발생시 해당 step에서 stop을 하게 됩니다. 더이상 진행되지 않습니다.
     ```
- - Use WhatIF(Preview) Parameter : Cmdlet에 기본적으로 정의된 Whatif Parameter를 사용시 해당 명령어가 실제 수행되지 않고 예상 결과만 출력해 줍니다. 스크립트 테스트시 유용하게 사용할 수 있습니다. (whatif가 정의된 Cmdlet 또는 Function 에서만 사용가능합니다. 확인 Get-Help나 Tab을 이용해 봅시다.) 
+ - Use WhatIF(Preview) Parameter : Cmdlet에 기본적으로 정의된 Whatif Parameter를 사용시 해당 명령어가 실제 수행되지 않고 예상 결과만 출력해 줍니다. 스크립트 테스트시 유용하게 사용할 수 있습니다. (whatif가 정의된 Cmdlet 또는 Function 에서만 사용가능합니다. 지원 여부 확인은 Get-Help나 Tab을 이용해 봅시다.) 
     ```powershell
     PS> > New-Datacenter -Location (Get-Folder -NoRecursion) -Name TESTDC -WhatIf
     WhatIf: 대상 "root datacenter"에서 "New datacenter." 작업을 수행합니다.
@@ -216,7 +220,7 @@
         TotalMilliseconds : 281.5191
         ```
 
-## **5. Set-Cmdlet example (Lab)
+## **5. Set-Cmdlet Lab**
 
  - Configuring some advanced settings for multiple VMs : VM별 보안권고 설정을 확인 및 변경해 봅시다.
     > 보안 권고 Advanced setting : 
@@ -288,7 +292,7 @@
     PS> Get-VDPortgroup
     ```
 
-## **6. Sample scenario : Automatic provisioning VM hosts with vcenter**
+## **6. Sample scenario : Automatic provisioning VM hosts and vcenter**
 
 - PXE install
 https://xenappblog.com/2018/automatically-install-vmware-esxi-6-7/
@@ -306,7 +310,7 @@ http://www.brianjgraf.com/2015/03/16/deploy-vcenter-server-6-vcsa6-powercli/
 - Move host
 
 
-## **Appendix. Useful References Links
+## **Appendix. Useful References Links**
 
 | Web site | URL |
 |-----|-----|
