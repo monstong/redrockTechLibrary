@@ -20,6 +20,7 @@
 - Pre-requisites (버전마다 조금씩 차이가 있으며, 본 문서에서는 11.1.0 기준입니다.)
 
     * Check the Compatibility Matrix and Upgrade Powershell version as needed
+    
         | Category | OS Type | 64 bit |
         |-----|-----|-----|
         | Local OS Support | Server | Windows Server 2016, Windows Server 2012 R2, Windows Server 2008 R2 SP1 |
