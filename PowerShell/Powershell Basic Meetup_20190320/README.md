@@ -475,7 +475,7 @@ PS C:\> (Get-WmiObject -Class Win32_NetworkAdapterConfiguration).Where{$_.IPAddr
     * 별도의 Credential을 생성하여 변수에 저장 방식
     * 생성한 credential을 XML 파일로 저장 방식
 
-- 위의 4가지 방식중 하나의 접속정보를 이용하여 아래 2가지 방식 중 하나로 Remote 서버로 접속 및 원하는 명령을 수행할 수 있습니다.
+- 위의 4가지 방식중 하나의 접속정보를 이용하여 아래 3가지 방식 중 하나로 Remote 서버로 접속 및 원하는 명령을 수행할 수 있습니다.
 
 - using Enter-PSSession : SSH로 접속하듯이 PSsession을 생성하여 Interactive하게 명령을 주고 받을 수 있습니다.
     ```powershell
@@ -506,6 +506,37 @@ PS C:\> (Get-WmiObject -Class Win32_NetworkAdapterConfiguration).Where{$_.IPAddr
     => 네번째 방식
     ```
 
+- using New-PSsession and Invoke-Command :  위의 Invoke-Command 방식으로 수행하면 매번 세션을 새로 맺어야 하는 부하(?)가 발생합니다.
+이에 New-Pssession으로 최초 세션을 생성후 Invoke-Command의 -Session Parameter로 그때 그때 사용후 Pssession을 종료하는 아래와 같은 방식으로도 사용할 수 있습니다.
+    ```powershell
+    PS> $so = New-PsSessionOption -SkipCACheck -SkipCNCheck
+    PS> $mysession = New-PSSession -ComputerName {your hostname} -Credential {username or domain username} -UseSSL -SessionOption $so
+    => 세션 생성
+
+    PS> Invoke-Command -ScriptBlock { Get-Process } -Session $mysession
+    PS> Invoke-Command -ScriptBlock { Get-ChildItem -path c:\ } -Session $mysession
+    => -Session 파라미터로 Invoke-command 여러차례 수행
+
+    PS> Disconnect-PSSession -Session $mysession
+    => PSsession 종료
+    ```
+
+- Real Process of Powershell PSSession : WinRM을 통한 Powershell 접속시 대상 원격 서버에서는 `wsmprovhost.exe` 라는 프로세스가 생성됩니다. 
+    * `wsmprovhost` 프로세스는 WinRM Plug-in용 Host Process 로 PSsession생성시마다 작업관리자에서 확인이 가능합니다.
+        ```powershell
+        PS>  tasklist 
+        또는
+        PS> Get-Process | Where-Ojbect {$_.ProcessName -eq 'wsmprovhost'}
+        ```
+    * 여러개의 PSsession이 접속되어 있을 경우 본인의 PSSession을 확인할때는 $PID 환경변수를 이용해 봅시다.
+
+        ```powershell
+        PS> Enter-PSSession -ComputerName RemoteServer  -Credential (Get-Credential) -UseSSL -SessionOption $so
+        [RemoteServer] PS> $PID
+        3348
+        => 대상 원격 서버에서 PID 3348인 wsmprovhost 프로세스가 실제 해당 PSsession 입니다.
+        ```
+        
 ## **6. Simple LAB : Monitoring/Event Logging**
 
 - 2가지 방식 중 선택(본Lab에서는 2번째 방식으로 수행함)
@@ -513,6 +544,8 @@ PS C:\> (Get-WmiObject -Class Win32_NetworkAdapterConfiguration).Where{$_.IPAddr
     * 각 대상 서버내 모니터링 스크립트를 주기적으로 수행
 
 - creating owned powershell script : 아래의 양식을 이용하여 각자 원하는 모니터링 스크립트를 만들어 봅시다.
+    * 추천 예제 1: 특정 파일의 사이즈가 임게치를 초과하면 이벤트 발생 (및) 백업)
+    * 추천 예제 2: 특정 프로세스가 중지되었을때 이벤트 발생 
 
     ```powershell
 
@@ -597,3 +630,7 @@ PS C:\> (Get-WmiObject -Class Win32_NetworkAdapterConfiguration).Where{$_.IPAddr
     PS C:\> Install-Module -Name SQLite -Scope CurrentUser
 
     ```
+
+
+## References
+ - https://blog.netspi.com/powershell-remoting-cheatsheet/
