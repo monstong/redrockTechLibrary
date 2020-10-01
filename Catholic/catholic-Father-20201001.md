@@ -127,7 +127,7 @@ http://maria.catholic.or.kr/sungga/search/sungga_view.asp?ctxtIndex=436
 
 ## 모두 무릎을 꿇고 ‘주님의 기도’, ‘성모송’을 각각 한 번씩 하고 다음 기도로 위령 기도를 마친다.
 
-# 주님의 기도
+## (주님의 기도)
 ## 하늘에 계신 우리 아버지,
 ## 아버지의 이름이 거룩히 빛나시며
 ## 아버지의 나라가 오시며
@@ -141,7 +141,7 @@ http://maria.catholic.or.kr/sungga/search/sungga_view.asp?ctxtIndex=436
 ## 악에서 구하소서.
 ## 아멘.
 
-# 성모송
+## (성모송)
 ## 은총이 가득하신 마리아님, 기뻐하소서!
 ## 주님께서 함께 계시니 여인 중에 복되시며
 ## 태중의 아들 예수님 또한 복되시나이다.
