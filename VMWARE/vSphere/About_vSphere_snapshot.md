@@ -48,3 +48,6 @@
 vSAN 는 thin provioning 으로 구성되어 있어 vcenter UI 상에서 보여지는 크기와 실제 점유율 그리고 vsan capacity 에서 보여지는 공간의 차이는 백단으로 확인이 필요합니다. 
 
 
+# references
+- https://docs.vmware.com/kr/VMware-vSphere/7.0/com.vmware.vsphere.vm_admin.doc/GUID-CA948C69-7F58-4519-AEB1-739545EA94E5.html
+
