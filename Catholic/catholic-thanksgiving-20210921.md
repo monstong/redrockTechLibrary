@@ -8,7 +8,7 @@
 # 3. 시작 성가 : 227번(나는 부활이요 생명이니라)
 https://maria.catholic.or.kr/musicfiles/mp3/2004090227.mp3 
 
-![](./image/no227-sung-ga.jpeg)
+![](https://github.com/monstong/redrockTechLibrary/blob/master/Catholic/image/no227-sung-ga.jpeg)
 ## 1) 나는 부활이요 생명이니 목마른 사람은 내게 오라 무거운 짐 진 자 멍에 벗겨주고 영원한 생명을 네게 주리
 
 ## 2) 나를 믿는 자는 죽더라도 영원한 생명을 얻으리라 기쁨이 넘치는 아버지 집에서 영원한 행복을 누리리라
