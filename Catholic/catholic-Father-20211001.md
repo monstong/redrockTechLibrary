@@ -6,7 +6,7 @@
 - ○ , ● : 두 그룹으로 나누어 선창, 후창
 - ◎ : 다같이 기도
 ## 기도시 손모양 
-<IMG src="http://bbs.catholic.or.kr/attbox/bbs/include/readImg.asp?gubun=100&maingroup=2&filenm=IMG%5F0543%2EJPG" width=100>
+<IMG src="http://bbs.catholic.or.kr/attbox/bbs/include/readImg.asp?gubun=100&maingroup=2&filenm=IMG%5F0543%2EJPG" width=500>
 
 ## 성호경 긋는 순서 
 ### 1. 성부와 (오른손을 머리위로)
