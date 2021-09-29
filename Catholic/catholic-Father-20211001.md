@@ -6,13 +6,13 @@
 - ○ , ● : 두 그룹으로 나누어 선창, 후창
 - ◎ : 다같이 기도
 ## 기도시 손모양 
-![기도손](http://bbs.catholic.or.kr/attbox/bbs/include/readImg.asp?gubun=100&maingroup=2&filenm=IMG%5F0543%2EJPGn|width=100)
+<IMG src="http://bbs.catholic.or.kr/attbox/bbs/include/readImg.asp?gubun=100&maingroup=2&filenm=IMG%5F0543%2EJPGn" width=100>
 
 ## 성호경 긋는 순서 
-1. 성부와 (오른손을 머리위로)
-2. 성자와 (오른손을 가슴으로 내리고)
-3. 성령의 이름으로 (오른손을 왼쪽 어깨에서 오른쪽 어깨로)
-4. 아멘 (기도손으로 마무리)
+### 1. 성부와 (오른손을 머리위로)
+### 2. 성자와 (오른손을 가슴으로 내리고)
+### 3. 성령의 이름으로 (오른손을 왼쪽 어깨에서 오른쪽 어깨로)
+### 4. 아멘 (기도손으로 마무리)
 
 # 2020년 10월 1일 아버지 14주기 가정 기일 제례
 -----
