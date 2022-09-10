@@ -18,9 +18,8 @@
 ## ◎ 아멘
 
 # 3. 시작 성가 : 462번(나는 부활이요 생명이니라)
-https://maria.catholic.or.kr/musicfiles/mp3/2004090227.mp3 
 
-https://youtu.be/4lLsgNPsw-o 
+https://youtu.be/Q8G190MU2Mc 
 
 ![](https://maria.catholic.or.kr/files/mp3/sungga/img/2012/2012040462.jpg)
 ## 1) 이 세상 지나가고 저 천국 가까워 나 오래 기다리던 그 영광 보인다
