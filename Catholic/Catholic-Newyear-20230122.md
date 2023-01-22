@@ -5,8 +5,8 @@
 - ◎ : 다같이 기도
 ## 기도시 손모양 
 
+<img src="http://bbs.catholic.or.kr/attbox/bbs/include/readImg.asp?gubun=100&maingroup=2&filenm=IMG%5F0543%2EJPG"  width="300" />
 
-<img src="http://bbs.catholic.or.kr/attbox/bbs/include/readImg.asp?gubun=100&maingroup=2&filenm=IMG%5F0543%2EJPG"  width="200" />
 ## 성호경 긋는 순서 
 ![](http://data1.momsdiary.co.kr/diary_data17/goope7378/img/goope7378210412141658.jpg =120x120)
 1. 성부와 (오른손을 머리위로)
