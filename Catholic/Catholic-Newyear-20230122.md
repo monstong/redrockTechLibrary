@@ -7,7 +7,7 @@
 ![기도손](http://bbs.catholic.or.kr/attbox/bbs/include/readImg.asp?gubun=100&maingroup=2&filenm=IMG%5F0543%2EJPG)
 
 ## 성호경 긋는 순서 
-![](http://data1.momsdiary.co.kr/diary_data17/goope7378/img/goope7378210412141658.jpg | width=100)
+![](http://data1.momsdiary.co.kr/diary_data17/goope7378/img/goope7378210412141658.jpg =120x120)
 1. 성부와 (오른손을 머리위로)
 2. 성자와 (오른손을 가슴으로 내리고)
 3. 성령의 이름으로 (오른손을 왼쪽 어깨에서 오른쪽 어깨로)
