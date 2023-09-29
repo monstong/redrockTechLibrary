@@ -23,11 +23,7 @@
 ## ◎ 아멘
 
 # 3. 시작 성가 : 성가 54번(주님은 나의 목자)
-
-[![Watch the video](https://img.youtube.com/vi/APOPm01BVrk/hqdefault.jpg)](https://youtu.be/MAEiSqel3s4)
-
-[<img src="https://img.youtube.com/vi/APOPm01BVrk/hqdefault.jpg" width="600" height="300"
-/>](https://youtu.be/MAEiSqel3s4)
+https://youtu.be/MAEiSqel3s4 
 
 ## 1) 주님은 나의 목자시니 나는 아무것도 아쉽지 않네 푸른 풀밭 시냇가에 쉬게 하사 나의 심신을 새롭게 하네
 ## 2) 주님은 나의 목자시니 바른 지름길로 인도하시고 죽음의 골짜기를 간다 해도 주님 계시니 두렵지 않네
