@@ -21,8 +21,7 @@
 # 3. 시작 성가 : 462번(이 세상 지나가고)
 https://youtu.be/Q8G190MU2Mc?si=3kgFm7raklCegieP 
 
-<video width="630" height="300" src="https://youtu.be/Q8G190MU2Mc?si=3kgFm7raklCegieP"></video>
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Q8G190MU2Mc?si=R4YgRucYYCIpiQGM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 # 4. 시작 기도
 
